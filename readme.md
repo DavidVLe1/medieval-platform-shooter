@@ -15,11 +15,30 @@ ___
 ___
 Create a web based platform shooter video game to bring awareness to the platform shooter genre.
 
-- Build a web game app using either phaser.js or Kaboom.js. backend can handle 
-    stuff like user,Profile, GameData, stats, items,
-    maybes( enemies,npcs, Leaderboards, game events, achievements) 
-    that can be their own separate tables.
+Build a web game app using either phaser.js or Kaboom.js. backend can have tables to handle 
+    stuff like:
 
+- User
+  - Store user information like username, email, password (hashed), and any other relevant user details.
+  - This table can be used for user authentication and to associate game data with specific users.
+- GameSession
+  - Track information about individual game sessions, such as start time, end time, and duration.
+  - Store the user who played the session and any relevant session statistics.
+- Leaderboard
+  - A leaderboard table to store player scores and rankings.
+  - Include columns for user ID, score, and a timestamp to track when the score was achieved.
+- Player Progress
+  - Keep track of the player's progress in the game, including their level, collected items, and achievements. 
+  - This table might be used to restore the player's progress when they log in.
+- User-Game Statistics
+  - For more detailed game statistics, you can create a table to record various in-game actions and events, like the number of enemies defeated, shots fired, levels completed, etc.
+- Items
+  - If your game includes power-ups, weapons, or collectibles, you can have a table to store information about these items.
+  - Include attributes like item name, description, and any in-game effects.
+- User Inventory
+  - If the game involves an inventory system for items and equipment, you can have a table to track what items each user possesses.
+
+    
 - The game is designed to provide players with responsive controls, formidable 
     adversaries, and an immersive world that calls back to the essence of what made 
     Mega Man an unforgettable adventure while also being accessible in the form
@@ -27,7 +46,7 @@ Create a web based platform shooter video game to bring awareness to the platfor
     for an approachable yet exhilarating platformer shooter that resonates with
     both long-time enthusiasts and newcomers to this cherished genre.
 
-Example
+Example: 
 > ### Scenario 1
 > In a suburban household, a young adult named Alex, born in the 1990s, 
 > cherished the classic platform shooter games from that era, like Contra 
@@ -39,6 +58,7 @@ Example
 > and her eyes lit up with excitement as she experienced the simple yet 
 > exhilarating gameplay, falling in love with the genre that had enchanted 
 > her older sibling.
+> 
 >  ### Scenario 2
 > A charity organization, "Gamers for Good," decided to host a gaming 
 > marathon for a noble cause. Their goal was to raise funds for underprivileged
@@ -48,39 +68,92 @@ Example
 > joined the marathon, played the game, and donated generously. The event garnered 
 > widespread attention, both for the charity and the classic genre it celebrated.
 > Gamers worldwide got on board, bringing platform shooters back into the limelight.
->
+> 
+> ### Scenario 3
+> A young student named Alex, facing the pressures of school, discovered a 
+> web-based platform shooter game which not only provided enjoyment 
+> but also improved his problem-solving and hand-eye coordination skills. The game's
+> soothing atmosphere acted as a stress reliever, offering a peaceful escape from 
+> his schoolwork. "JumpQuest's" global leaderboard added a competitive element,
+> motivating Alex to excel and prove himself among players worldwide. His 
+> proficiency in the game had a positive impact on his academic life, improving 
+> his confidence and problem-solving abilities. Alex's experience highlighted how 
+> this platform shooter game and other similar games can offer both fun and 
+> valuable skills,while connecting players worldwide in a sense of shared 
+> competition and community.
+> 
 
 ___
 ## Glossary
 - User: Model representing user who has an account.
 - Guest: Model for representing users who are not logged in, thus have no user information.
-- Profile: Model for user profiles. displays information on the user gathered from when the user signed up.
+- Profile: Model for user profiles. displays information on the user gathered from when the user signed up. // could be displayed in game.
 - GameData: Model for representing game-specific data such as game state, game progression.
-- Stats: Model for tracking player statistics such as how many enemies killed, items used, times died, characters level.
-- Playable Character: model representing the player's character such as character stats, health, skills
+  - game state details:
+    - Visual Feedback: health bar, level completion message, changes in characters/objects/environment.
+    - Auditory feedback: sound effects and music to give information on game state. ominous music for boss fight, beeping noises for low health.
+    - Interactive Feedback: way players can interact with game giving sense of game state. ex. responsiveness of character movement and actions, and feedback from controls.
+- World Stats: Model for tracking game world statistics such as...
+  - World Stat Details:
+    - enemies killed
+    - items used
+    - times died
+    - character's level
+    - time played
+- Playable Character: model representing the player's character
+  - Player Stats:
+    - Level
+    - health
+    - damage
+    - speed
+    - skills
+    - storage
 - Items: Model for game items.
-- Enemies: Model for enemy characters. Has their own stats such as damage, health, skills
+  - Item name
+  - Description
+  - Item Type
+  - Stat Bonus (Optional)
+- Enemies: Model for enemy characters.
+  - Enemy Type
+  - Damage 
+  - Health
+  - Skills
+  - speed
 - NPCs: Model for non-playable characters. Are interactable objects that has dialogue or gives health or items.
 - Leaderboards: Model for tracking high scores. Players are able to compare their scores with eachother looking at this data.
+  - UserName
+  - Score
+  - Time Played
 - GameEvents: Model for recording in-game events.
 - Achievements: Model for player achievements. Tracks whether certain actions have been done in the  game and awards the player for it.
 ___
 ## High Level Requirements
 - Sign up for an account/ Log in(authenticated).
 - View own user profile.(User).
-- Access the game.(Anyone)
+- Access the game.(Guest, User).
 - Edit own profile. (User)
+- Has a playable Character (Guest, User).
+- Can view their player progression (User). maybe guest too
+- Can track GameData such as their game progression and game state (User).
+- Can track world stats to see what they've done to the world (User).
 - Store and retrieve game progress, Save and load game settings. (User).
-- Record and display player statistics, Compare stats with other players.(User)
-- Collect and use game items, Manage in-game inventory. (Anyone)
-- Encounter and defeat enemies, Gain experience points from defeating enemies. (Anyone)
-- Interact with NPCs, Receive quests or missions from NPCs.(Anyone) 
-- Compete for top positions on leaderboards, View high scores of other players. (Anyone)
+- Playable Character Can store and use items. (Guest, User).
+- Playable Character can interact with npc and enemies. (Guest, User).
+- Can view leaderboard and compare their score with other people's score. (User). 
+- Playable Character can gain experience points from defeating enemies. (Guest, User).
+- Interact with NPCs, Receive quests or missions from NPCs. (Guest, User).
+- Compete for top positions on leaderboards, View high scores of other players. (User) maybe also (Guest).
 - Capture in-game events and achievements, Display event history. (Anyone)
-- Unlock and earn achievements, Showcase earned achievements to others. ( User)
+- Unlock and earn achievements, Showcase earned achievements to others. (User)
 
 ### User Stories/Scenarios
 ___
+- As a casual user, I want to play the game and see my personal records displayed.
+- As an authenticated user, I want to see the leaderboard and my profile.
+    - Depends on: as an unauthenticated user, I want to login in order to view my profile and the leaderboard.
+    - Which depends on: As a new user, I want to make an account so that I can see my score on the leaderboard and view my profile.
+
+
 > ### Play the game
 >  If the player wants to play the game
 >
@@ -92,35 +165,119 @@ ___
 > If the user wants to track their stats or profile data, they can sign up.
 > 
 > Suggested data:
-> - username/email 
-> - password 
+> - username/email (String name)
+> - password (String name)
+> - player name (String name)
+> - color (String color)
+> - gender (String gender || char gender)
 > 
 > **Precondition**: None
 > 
 > **Post-condition**: None
 >
-> ### View Stats
+> ### View World Stats
 >  If the player wants to view their stats
 >
-> **Precondition**: Player must be logged in as admin or User
+> suggested data: 
+> - enemies killed (int number)
+> - items used (int number)
+> - times died (int number)
+> - character's level (double number|| int number)
+> - time played (time days/hours/minutes)
+> 
+> **Precondition**: None, Player can be logged in as User or Guest
 >
 > **Post-condition**: None
 >
 > ### View Profile
->  If the player wants to view their profile
+>  If the player wants to view their profile 
+>  
+> suggested data in profile:
+> - player name (String name)
+> - color (String color)
+> - gender (String gender || char gender)
 >
-> **Precondition**: Player must be logged in as admin or User
+> **Precondition**: Player must be logged in as User
 >
 > **Post-condition**: None 
 > 
-> ### Edit Profile 
-> 
+> ### Edit Profile
 >  If the player wants to Edit their profile
+> 
+> suggested data in profile to edit:
+> - player name (String name)
+> - color (String color)
+> - gender (String gender || char gender)
 >
-> **Precondition**: Player must be logged in as admin or User
+> **Precondition**: Player must be logged in as User
 >
 > **Post-condition**: None 
+> 
+>  ### View Player Progression
+>  
+> suggested data in player progression (could be character profile/Character Info)
+> - Level
+> - health
+> - damage
+> - speed
+> - skills
+> - storage
+> **Precondition**: None
 >
+> **Post-condition**: None 
+>  
+>  ### Save Game Data
+> If the player is logged in, they are able to save their game to their account for later.
+> 
+> suggested data:
+> - Visual Feedback: health bar, level completion message, changes in characters/objects/environment.
+> - Auditory feedback: sound effects and music to give information on game state. ominous music for boss fight, beeping noises for low health.
+> - Interactive Feedback: way players can interact with game giving sense of game state. ex. responsiveness of character movement and actions, and feedback from controls.
+>
+> **Precondition**: Player must be logged in as User
+>
+> **Post-condition**: None
+>  
+>  ### Load Game Data
+> If the player is logged in, they have the ability to browse previous game data if they saved any and can load it.
+> 
+> suggested data:
+> - Visual Feedback: health bar, level completion message, changes in characters/objects/environment.
+> - Auditory feedback: sound effects and music to give information on game state. ominous music for boss fight, beeping noises for low health.
+> - Interactive Feedback: way players can interact with game giving sense of game state. ex. responsiveness of character movement and actions, and feedback from controls.
+>
+> **Precondition**: Player must be logged in as User
+>
+> **Post-condition**: None 
+>  
+>  ### Store game Items
+>  If the player wants to store an item for later use upon finding an item.
+>  
+> suggested data:
+> - Item name
+> - Description
+> - Item Type
+> - Stat Bonus (Optional)
+>  
+> **Precondition**: None, player has to interact with the item and choose to store it.
+>
+> **Post-condition**: None
+>  
+> ### Store game Items
+>  If the player wants to store an item for later use upon finding an item.
+>
+> suggested data:
+> - Item name
+> - Description
+> - Item Type
+> - Stat Bonus (Optional)
+>
+> **Precondition**: None, player has to interact with the item and choose to store it.
+>
+> **Post-condition**: Removed item from user's storage.
+>  
+>  
+> 
 
 ## Technical Requirements
 -Manage 4-7 database tables (entities) that are independent concepts. A simple bridge table doesn't count.
