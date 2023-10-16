@@ -86,14 +86,18 @@ Example:
 ___
 ## Glossary
 - User: Model representing user who has an account.
+  - playerId
+  - username
+  - email
+  - password
 - Guest: Model for representing users who are not logged in, thus have no user information.
 - User Profile: Model for user profiles. displays information on the user gathered from when the user signed up. // could be displayed in game.
-- GameData: Model for representing game-specific data such as game state, game progression.
-  - game state details:
-    - Visual Feedback: health bar, level completion message, changes in characters/objects/environment.
-    - Auditory feedback: sound effects and music to give information on game state. ominous music for boss fight, beeping noises for low health.
-    - Interactive Feedback: way players can interact with game giving sense of game state. ex. responsiveness of character movement and actions, and feedback from controls.
+  - playerId
+  - player name (String name)
+  - Favorite color (String color)
+  - gender (String gender || char gender)
 - World Stats: Model for tracking game world statistics such as...
+  - playerId (link to player) 
   - World Stat Details:
     - enemies killed
     - items used
@@ -101,6 +105,7 @@ ___
     - character's level
     - time played
 - Playable Character: model representing the player's character
+  - playerId
   - Player Stats:
     - Level
     - health
@@ -120,15 +125,30 @@ ___
   - Skills
   - speed
 - NPCs: Model for non-playable characters. Are interactable objects that has dialogue or gives health or items.
+  - NPC Name
+  - Dialogue
+  - Rewards
 - Leaderboards: Model for tracking high scores. Players are able to compare their scores with eachother looking at this data.
+  - playerId
   - UserName
   - Score
   - Time Played
 - GameEvents: Model for recording in-game events.
-  - bosses killed (change in audio, visual and enemies get stronger)
-  - time passed (enemies get stronger over time).
-  - legendary item obtained (character is modified visually, audibly)
+  - playerId (linked to player id) 
+  - bosses killed (int num) (change in audio, visual and enemies get stronger)
+  - time passed (Int timeInSeconds) (enemies get stronger over time).
+  - legendary item obtained (boolean) (character is modified visually, audibly)
 - Achievements: Model for player achievements. Tracks whether certain actions have been done in the  game and awards the player for it.
+  - playerId (linked to player id)
+  - killed 1 enemy (boolean)
+  - killed 10 enemies (boolean)
+  - used first item (boolean)
+  - killed first boss (boolean)
+  - killed second boss (boolean)
+  - killed third boss (boolean)
+  - killed final boss (boolean)
+  - first death (boolean)
+  - stayed in game with timer going to 1 minutes (boolean)
 ___
 ## High Level Requirements
 - Sign up for an account/ Log in(authenticated).
@@ -350,7 +370,7 @@ ___
 
 ### BackEnd
 -  If user is a guest, don't save any data or store any data as it will be held temporarily, similar with a user but they can save whenever they want. 
-- 
+- at least 4 tables: LeaderBoard, Items, User, User Profile, World Stats, PlayableCharacter, Enemies, NPCs, Achievements, GameEvents
 - 
 - 
 - 
