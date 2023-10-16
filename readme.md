@@ -87,7 +87,7 @@ ___
 ## Glossary
 - User: Model representing user who has an account.
 - Guest: Model for representing users who are not logged in, thus have no user information.
-- Profile: Model for user profiles. displays information on the user gathered from when the user signed up. // could be displayed in game.
+- User Profile: Model for user profiles. displays information on the user gathered from when the user signed up. // could be displayed in game.
 - GameData: Model for representing game-specific data such as game state, game progression.
   - game state details:
     - Visual Feedback: health bar, level completion message, changes in characters/objects/environment.
@@ -125,6 +125,9 @@ ___
   - Score
   - Time Played
 - GameEvents: Model for recording in-game events.
+  - bosses killed (change in audio, visual and enemies get stronger)
+  - time passed (enemies get stronger over time).
+  - legendary item obtained (character is modified visually, audibly)
 - Achievements: Model for player achievements. Tracks whether certain actions have been done in the  game and awards the player for it.
 ___
 ## High Level Requirements
@@ -139,10 +142,9 @@ ___
 - Store and retrieve game progress, Save and load game settings. (User).
 - Playable Character Can store and use items. (Guest, User).
 - Playable Character can interact with npc and enemies. (Guest, User).
-- Can view leaderboard and compare their score with other people's score. (User). 
+- Can view leaderboard and Compete for top positions on leaderboards, View high scores of other players. (User) maybe also (Guest).
 - Playable Character can gain experience points from defeating enemies. (Guest, User).
-- Interact with NPCs, Receive quests or missions from NPCs. (Guest, User).
-- Compete for top positions on leaderboards, View high scores of other players. (User) maybe also (Guest).
+- Interact with NPCs, Receive quests,items or exp from NPCs. (Guest, User).
 - Capture in-game events and achievements, Display event history. (Anyone)
 - Unlock and earn achievements, Showcase earned achievements to others. (User)
 
@@ -189,8 +191,8 @@ ___
 >
 > **Post-condition**: None
 >
-> ### View Profile
->  If the player wants to view their profile 
+> ### View User Profile
+>  Player can view their profile to see what information is available to them on their account. 
 >  
 > suggested data in profile:
 > - player name (String name)
@@ -201,8 +203,8 @@ ___
 >
 > **Post-condition**: None 
 > 
-> ### Edit Profile
->  If the player wants to Edit their profile
+> ### Edit User Profile
+>  User can Edit their profile to change their character name, color, gender to affect their character's appearance
 > 
 > suggested data in profile to edit:
 > - player name (String name)
@@ -213,9 +215,10 @@ ___
 >
 > **Post-condition**: None 
 > 
->  ### View Player Progression
->  
-> suggested data in player progression (could be character profile/Character Info)
+>  ### View Player Progression//Character Profile Sheet
+> Can view their Character Profile Sheet to see what information is available. 
+> 
+> suggested data in Character Profile Sheet (could be character profile/Character Profile Sheet)
 > - Level
 > - health
 > - damage
@@ -227,7 +230,7 @@ ___
 > **Post-condition**: None 
 >  
 >  ### Save Game Data
-> If the player is logged in, they are able to save their game to their account for later.
+> Once the player is logged in, they are able to save their game to their account for later.
 > 
 > suggested data:
 > - Visual Feedback: health bar, level completion message, changes in characters/objects/environment.
@@ -239,7 +242,7 @@ ___
 > **Post-condition**: None
 >  
 >  ### Load Game Data
-> If the player is logged in, they have the ability to browse previous game data if they saved any and can load it.
+> Once the player is logged in, they have the ability to browse previous game data if they saved any and can load it.
 > 
 > suggested data:
 > - Visual Feedback: health bar, level completion message, changes in characters/objects/environment.
@@ -251,7 +254,7 @@ ___
 > **Post-condition**: None 
 >  
 >  ### Store game Items
->  If the player wants to store an item for later use upon finding an item.
+>  Once the player wants to store an item for later use upon finding an item.
 >  
 > suggested data:
 > - Item name
@@ -264,7 +267,7 @@ ___
 > **Post-condition**: None
 >  
 > ### Store game Items
->  If the player wants to store an item for later use upon finding an item.
+>  Once the player wants to store an item for later use upon finding an item.
 >
 > suggested data:
 > - Item name
@@ -276,7 +279,56 @@ ___
 >
 > **Post-condition**: Removed item from user's storage.
 >  
+> ### View LeaderBoard
+>  Once the player wants to view the leaderboard and compare their scores to other players.
+>
+> suggested data:
+> - UserName
+> - Score
+> - Time Played
+>
+> **Precondition**: None, player has to choose to submit their score to the database || player submits score automatically on game over(exiting, or dying).
+>
+> **Post-condition**: player's score is uploaded to leaderboard.
+> 
+>  ### Interact with enemies and NPC
+> Once the user wants to engage with the world to get items, skills, or experience
+> 
+>  suggested data for the character's progression:
+> - Level is increased
+> - health changed
+> - damage changed
+> - speed changed
+> - new skills added 
+> - storage updated
+> 
+> > **Precondition**: player interacts with enemies/ NPCs.
+> 
+> **Post-condition**: data above is updated.
 >  
+>  
+>  ### Achieved an Achievement
+> Once the user has made certain actions in the game and activated a notice that they receieved an achievement.
+> 
+> suggested data:
+> - Achievement Name
+> - Achievement Description
+>
+> > **Precondition**: performed an action activating the achievement.
+>
+> **Post-condition**: achievement is now listed on their character profile sheet.
+> 
+>  ### Activated an Event change to the world.
+>  
+> suggested data:
+> - bosses killed (int number) (change in audio, visual and enemies get stronger)
+> - time passed (int number) (enemies get stronger over time).
+> - legendary item obtained  (boolean unlocked) (character is modified visually, audibly)
+>  
+> **Precondition**: performed an action activating the world change.
+>
+> **Post-condition**: World is affected somehow/ data above is updated.
+> 
 > 
 
 ## Technical Requirements
@@ -287,16 +339,17 @@ ___
 -Sensible layering and pattern choices
 -A full test suite that covers the domain and data layers.
 
-
+## Summarized 
+___
 ### FrontEnd
 - Focuses on using Phaser.js or Kaboom.js to create a playable video game.
--
--
+- stores data locally initially and then posts to backend upon save.
+- is a platform shooter.
 -
 -
 
 ### BackEnd
--  
+-  If user is a guest, don't save any data or store any data as it will be held temporarily, similar with a user but they can save whenever they want. 
 - 
 - 
 - 
