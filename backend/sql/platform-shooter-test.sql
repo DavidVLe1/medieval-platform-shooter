@@ -4,6 +4,8 @@ use platform_shooter_test;
 
 -- create tables and relationships
 
+
+
 create table `user` (
     user_id int primary key auto_increment,
     first_name varchar(200) not null,
@@ -15,6 +17,19 @@ create table `user` (
     gender varchar (200) not null
 );
 
+-- player character can have no skills (references by skill_id) similar with storage (referenced player_storage_id)
+create table player_character(
+    player_character_id int primary key auto_increment,
+    user_id int not null,
+    time_played_in_seconds int not null,
+    characters_level double not null,
+    max_health double not null,
+    health double not null,
+    damage double not null,
+    speed double not null,
+    healing_potions int,
+    foreign key (user_id) references user(user_id)
+);
 create table leaderboard (
     leaderboard_id int primary key auto_increment,
     user_id int,
@@ -33,27 +48,14 @@ create table items(
 
 create table world_stats(
     world_stats_id int primary key auto_increment,
-    user_id int,
+    player_character_id int,
     enemies_killed int,
     items_used int,
     times_died int,
-    characters_level double,
-    foreign key (user_id) references user(user_id)
+    foreign key (player_character_id) references player_character(player_character_id)
 );
 
--- player character can have no skills (references by skill_id) similar with storage (referenced player_storage_id)
-create table player_character(
-    player_character_id int primary key auto_increment,
-    user_id int not null,
-    time_played_in_seconds int,
-    characters_level double not null,
-    max_health double not null,
-    health double not null,
-    damage double not null,
-    speed double not null,
-    healing_potions int,
-    foreign key (user_id) references user(user_id)
-);
+
 
 create table enemy(
     enemy_id int primary key auto_increment,
@@ -70,32 +72,18 @@ create table npc(
     stat_boost varchar(200)
 );
 
-create table achievements(
-    achievements_id int primary key auto_increment,
-    user_id int not null,
-    killed_one_enemy boolean not null,
-    killed_ten_enemies  boolean not null,
-    used_first_potion boolean not null,
-    killed_first_boss boolean not null,
-    killed_final_boss boolean not null,
-    first_death boolean not null,
-    foreign key (user_id) references user(user_id)
-);
-
 create table game_events(
     game_events_id int primary key auto_increment,
-    user_id int not null,
+    player_character_id int not null,
     bosses_killed int not null,
     legendary_item_obtained boolean not null,
     game_completed boolean not null,
-    foreign key (user_id) references user(user_id)
+    foreign key (player_character_id) references player_character(player_character_id)
 );
-
 delimiter //
 create procedure set_known_good_state()
 begin
-	delete from player_character;
-	alter table player_character auto_increment = 1;
+
 	delete from game_events;
 	alter table game_events auto_increment = 1;
 	delete from world_stats;
@@ -104,6 +92,8 @@ begin
 	alter table achievements auto_increment = 1;
 	delete from leaderboard;
 	alter table leaderboard auto_increment = 1;
+	delete from player_character;
+	alter table player_character auto_increment = 1;
 	delete from `user`;
 	alter table `user` auto_increment = 1;
 	delete from enemy;
@@ -142,20 +132,13 @@ begin
     values
         ('Vendor', '["Health +10", "Damage +5"]'),
         ('Guide', '["Speed +3", "Health +5"]');
-
-    -- Sample Achievements Data
-    insert into achievements (user_id, killed_one_enemy, killed_ten_enemies, used_first_potion, killed_first_boss, killed_final_boss, first_death, stayed_alive)
-    values
-        (1, true, true, false, true, false, true, true),
-        (2, false, true, true, false, true, true, true);
-
     -- Sample Game Events Data
-    insert into game_events (user_id, bosses_killed, legendary_item_obtained, game_completed)
+    insert into game_events (player_character_id, bosses_killed, legendary_item_obtained, game_completed)
     values
         (1, 2, true, true),
         (2, 1, false, true);
     -- Sample World stats Data
-    insert into world_stats (user_id, enemies_killed, items_used, times_died, characters_level)
+    insert into world_stats (player_character_id, enemies_killed, items_used, times_died, characters_level)
     values
         (1, 50, 10, 5, 15.5),
         (2, 100, 25, 8, 20.0);

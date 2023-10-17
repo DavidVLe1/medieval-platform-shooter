@@ -15,6 +15,19 @@ create table `user` (
     gender varchar (200) not null
 );
 
+-- player character can have no skills (references by skill_id) similar with storage (referenced player_storage_id)
+create table player_character(
+    player_character_id int primary key auto_increment,
+    user_id int not null,
+    time_played_in_seconds int not null,
+    characters_level double not null,
+    max_health double not null,
+    health double not null,
+    damage double not null,
+    speed double not null,
+    healing_potions int,
+    foreign key (user_id) references user(user_id)
+);
 create table leaderboard (
     leaderboard_id int primary key auto_increment,
     user_id int,
@@ -33,27 +46,14 @@ create table items(
 
 create table world_stats(
     world_stats_id int primary key auto_increment,
-    user_id int,
+    player_character_id int,
     enemies_killed int,
     items_used int,
     times_died int,
-    characters_level double,
-    foreign key (user_id) references user(user_id)
+    foreign key (player_character_id) references player_character(player_character_id)
 );
 
--- player character can have no skills (references by skill_id) similar with storage (referenced player_storage_id)
-create table player_character(
-    player_character_id int primary key auto_increment,
-    user_id int not null,
-    time_played_in_seconds int not null,
-    characters_level double not null,
-    max_health double not null,
-    health double not null,
-    damage double not null,
-    speed double not null,
-    healing_potions int,
-    foreign key (user_id) references user(user_id)
-);
+
 
 create table enemy(
     enemy_id int primary key auto_increment,
@@ -70,23 +70,12 @@ create table npc(
     stat_boost varchar(200)
 );
 
-create table achievements(
-    achievements_id int primary key auto_increment,
-    user_id int not null,
-    killed_one_enemy boolean not null,
-    killed_ten_enemies  boolean not null,
-    used_first_potion boolean not null,
-    killed_first_boss boolean not null,
-    killed_final_boss boolean not null,
-    first_death boolean not null,
-    foreign key (user_id) references user(user_id)
-);
 
 create table game_events(
     game_events_id int primary key auto_increment,
-    user_id int not null,
+    player_character_id int not null,
     bosses_killed int not null,
     legendary_item_obtained boolean not null,
     game_completed boolean not null,
-    foreign key (user_id) references user(user_id)
+    foreign key (player_character_id) references player_character(player_character_id)
 );
