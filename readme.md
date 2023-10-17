@@ -85,17 +85,14 @@ Example:
 
 ___
 ## Glossary
-- User: Model representing user who has an account.
-  - playerId
-  - username
+- User: Model representing user who has an account. can display some information on the user gathered from when the user in the game.
+  - playerId/userId
+  - username (player name (String name))
   - email
   - password
-- Guest: Model for representing users who are not logged in, thus have no user information.
-- User Profile: Model for user profiles. displays information on the user gathered from when the user signed up. // could be displayed in game.
-  - playerId
-  - player name (String name)
   - Favorite color (String color)
   - gender (String gender || char gender)
+- Guest: Model for representing users who are not logged in, thus have no user information.
 - World Stats: Model for tracking game world statistics such as...
   - playerId (link to player) 
   - World Stat Details:
@@ -103,7 +100,6 @@ ___
     - items used
     - times died
     - character's level
-    - time played
 - Playable Character: model representing the player's character
   - playerId
   - Player Stats:
@@ -113,11 +109,12 @@ ___
     - speed
     - skills
     - storage
+    - time passed (Int timeInSeconds) (enemies get stronger over time).
 - Items: Model for game items.
   - Item name
   - Description
-  - Item Type
-  - Stat Bonus (Optional)
+  - Item Type (weapons, healing potions, stat potions, misc)
+  - Stat_increment (Optional)
 - Enemies: Model for enemy characters.
   - Enemy Type
   - Damage 
@@ -128,16 +125,17 @@ ___
   - NPC Name
   - Dialogue
   - Rewards
+  - stat boost (boost's stats upon interaction)
 - Leaderboards: Model for tracking high scores. Players are able to compare their scores with eachother looking at this data.
   - playerId
   - UserName
   - Score
-  - Time Played
 - GameEvents: Model for recording in-game events.
   - playerId (linked to player id) 
   - bosses killed (int num) (change in audio, visual and enemies get stronger)
-  - time passed (Int timeInSeconds) (enemies get stronger over time).
+
   - legendary item obtained (boolean) (character is modified visually, audibly)
+  - game completed (boolean)
 - Achievements: Model for player achievements. Tracks whether certain actions have been done in the  game and awards the player for it.
   - playerId (linked to player id)
   - killed 1 enemy (boolean)
@@ -148,13 +146,12 @@ ___
   - killed third boss (boolean)
   - killed final boss (boolean)
   - first death (boolean)
-  - stayed in game with timer going to 1 minutes (boolean)
 ___
 ## High Level Requirements
 - Sign up for an account/ Log in(authenticated).
-- View own user profile.(User).
+- View own user information.(User).
 - Access the game.(Guest, User).
-- Edit own profile. (User)
+- Edit own user information. (User)
 - Has a playable Character (Guest, User).
 - Can view their player progression (User). maybe guest too
 - Can track GameData such as their game progression and game state (User).
@@ -211,10 +208,10 @@ ___
 >
 > **Post-condition**: None
 >
-> ### View User Profile
+> ### View own User
 >  Player can view their profile to see what information is available to them on their account. 
 >  
-> suggested data in profile:
+> suggested data to view:
 > - player name (String name)
 > - color (String color)
 > - gender (String gender || char gender)
@@ -223,10 +220,10 @@ ___
 >
 > **Post-condition**: None 
 > 
-> ### Edit User Profile
+> ### Edit own User 
 >  User can Edit their profile to change their character name, color, gender to affect their character's appearance
 > 
-> suggested data in profile to edit:
+> suggested data in User to edit:
 > - player name (String name)
 > - color (String color)
 > - gender (String gender || char gender)
@@ -243,8 +240,7 @@ ___
 > - health
 > - damage
 > - speed
-> - skills
-> - storage
+> - 
 > **Precondition**: None
 >
 > **Post-condition**: None 
@@ -272,33 +268,7 @@ ___
 > **Precondition**: Player must be logged in as User
 >
 > **Post-condition**: None 
->  
->  ### Store game Items
->  Once the player wants to store an item for later use upon finding an item.
->  
-> suggested data:
-> - Item name
-> - Description
-> - Item Type
-> - Stat Bonus (Optional)
->  
-> **Precondition**: None, player has to interact with the item and choose to store it.
 >
-> **Post-condition**: None
->  
-> ### Store game Items
->  Once the player wants to store an item for later use upon finding an item.
->
-> suggested data:
-> - Item name
-> - Description
-> - Item Type
-> - Stat Bonus (Optional)
->
-> **Precondition**: None, player has to interact with the item and choose to store it.
->
-> **Post-condition**: Removed item from user's storage.
->  
 > ### View LeaderBoard
 >  Once the player wants to view the leaderboard and compare their scores to other players.
 >
@@ -369,10 +339,12 @@ ___
 -
 
 ### BackEnd
--  If user is a guest, don't save any data or store any data as it will be held temporarily, similar with a user but they can save whenever they want. 
-- at least 4 tables: LeaderBoard, Items, User, User Profile, World Stats, PlayableCharacter, Enemies, NPCs, Achievements, GameEvents
-- 
-- 
+-  If user is a guest, don't save any data or store any data as it will be held temporarily, similar with a user, but they can save whenever they want. 
+- at least 4 tables: LeaderBoard, Items, User, World Stats, PlayableCharacter, Enemies, NPCs, Achievements, GameEvents
+  - enemies table is for grabbing enemy data to construct an enemy on frontend same with npcs
+  -  items table will be pulled from database into game to generate items and can be loaded into the player_character's inventory.
+  - player storage stores items user picked up
+  - skills table holds skills that enemies and user can use.
 - 
 
 
