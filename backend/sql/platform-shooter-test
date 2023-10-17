@@ -63,7 +63,7 @@ create table enemy(
     speed double not null
 );
 
-create table npcs(
+create table npc(
     npc_id int primary key auto_increment,
     npc_name  varchar(200) not null,
     stat_boost varchar(200)
@@ -93,7 +93,16 @@ create table game_events(
 delimiter //
 create procedure set_known_good_state()
 begin
-	delete from app_user_role;
+	delete from player_character;
+	delete from game_events;
+	delete from world_stats;
+	delete from achievements;
+	delete from leaderboard;
+	delete from user;
+	delete from enemy;
+	delete from items;
+	delete from npc;
+
     delete from app_role;
     alter table app_role auto_increment = 1;
     delete from app_user;

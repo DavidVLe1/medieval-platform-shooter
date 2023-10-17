@@ -63,7 +63,7 @@ create table enemy(
     speed double not null
 );
 
-create table npcs(
+create table npc(
     npc_id int primary key auto_increment,
     npc_name  varchar(200) not null,
     stat_boost varchar(200)
