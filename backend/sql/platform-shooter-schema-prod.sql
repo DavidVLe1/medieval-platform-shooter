@@ -4,7 +4,7 @@ use platform_shooter;
 
 -- create tables and relationships
 
-create table user (
+create table `user` (
     user_id int primary key auto_increment,
     first_name varchar(200) not null,
     last_name varchar(200) not null,
@@ -47,6 +47,7 @@ create table player_character(
     user_id int not null,
     time_played_in_seconds int not null,
     characters_level double not null,
+    max_health double not null,
     health double not null,
     damage double not null,
     speed double not null,
