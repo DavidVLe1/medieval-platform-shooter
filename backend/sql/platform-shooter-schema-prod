@@ -45,7 +45,7 @@ create table world_stats(
 create table player_character(
     player_character_id int primary key auto_increment,
     user_id int not null,
-    time_played_in_seconds int,
+    time_played_in_seconds int not null,
     characters_level double not null,
     health double not null,
     damage double not null,
