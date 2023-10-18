@@ -12,7 +12,8 @@ public class NpcMapper implements RowMapper<Npc> {
         Npc npc = new Npc ();
         npc.setNpcId (resultSet.getInt ("npc_id"));
         npc.setNpcName (resultSet.getString ("npc_name"));
-        npc.setStat_increment_type (resultSet.getString ("stat_boost"));
+        npc.setStatIncrementType (resultSet.getString ("stat_increment_type"));
+        npc.setStatIncrement (resultSet.getDouble ("stat_increment"));
         return npc;
     }
 }
