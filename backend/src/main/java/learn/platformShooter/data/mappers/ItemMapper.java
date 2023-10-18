@@ -1,15 +1,15 @@
 package learn.platformShooter.data.mappers;
 
-import learn.platformShooter.models.Items;
+import learn.platformShooter.models.Item;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ItemsMapper implements RowMapper<Items> {
+public class ItemMapper implements RowMapper<Item> {
     @Override
-    public Items mapRow(ResultSet resultSet, int i)throws SQLException {
-        Items items = new Items ();
+    public Item mapRow(ResultSet resultSet, int i)throws SQLException {
+        Item items = new Item ();
         items.setItemId (resultSet.getInt ("item_id"));
         items.setName (resultSet.getString ("name"));
         items.setItemDescription (resultSet.getString ("item_description"));

@@ -38,7 +38,7 @@ create table leaderboard (
     foreign key (user_id) references user(user_id)
 );
 
-create table items(
+create table item(
     item_id int primary key auto_increment,
     name varchar(200) not null,
     item_description TEXT not null,
@@ -89,8 +89,8 @@ begin
 
 	delete from enemy;
 	alter table enemy auto_increment = 1;
-	delete from items;
-	alter table items auto_increment = 1;
+	delete from item;
+	alter table item auto_increment = 1;
 	delete from npc;
 	alter table npc auto_increment = 1;
     
@@ -120,7 +120,7 @@ begin
         ('Vendor', 'Health',10),
         ('Guide','Speed' ,3);
 	-- Sample items Data
-    insert into items (name, item_description, type, stat_increment)
+    insert into item (name, item_description, type, stat_increment)
     values
         ('Health Potion', 'Restores health when consumed.', 'healing_potions', 20.0),
         ('Sword of Fire', 'A blazing sword that deals fire damage.', 'damage', 10.0),

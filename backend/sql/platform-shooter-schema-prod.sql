@@ -36,7 +36,7 @@ create table leaderboard (
     foreign key (user_id) references user(user_id)
 );
 
-create table items(
+create table item(
     item_id int primary key auto_increment,
     `name` varchar(200) not null,
     item_description TEXT not null,
@@ -48,7 +48,7 @@ create table world_stats(
     world_stats_id int primary key auto_increment,
     player_character_id int,
     enemies_killed int,
-    items_used int,
+    item_used int,
     times_died int,
     foreign key (player_character_id) references player_character(player_character_id)
 );

@@ -1,16 +1,16 @@
 package learn.platformShooter.models;
 
-public class Items {
+public class Item {
     private int itemId;
     private String name;
     private String itemDescription;
     private String type;
     private double statIncrement;
 
-    public Items() {
+    public Item() {
     }
 
-    public Items(int itemId , String name , String itemDescription , String type , double statIncrement) {
+    public Item(int itemId , String name , String itemDescription , String type , double statIncrement) {
         this.itemId = itemId;
         this.name = name;
         this.itemDescription = itemDescription;
