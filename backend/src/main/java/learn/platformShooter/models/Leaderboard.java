@@ -1,5 +1,7 @@
 package learn.platformShooter.models;
 
+import java.util.Objects;
+
 public class Leaderboard {
     private int leaderboardId;
     private int userId;
@@ -46,5 +48,18 @@ public class Leaderboard {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass () != o.getClass ()) return false;
+        Leaderboard that = (Leaderboard) o;
+        return leaderboardId == that.leaderboardId && userId == that.userId && score == that.score && Objects.equals (username , that.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash (leaderboardId , userId , username , score);
     }
 }

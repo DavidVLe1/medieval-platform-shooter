@@ -20,13 +20,13 @@ class EnemyJdbcTemplateRepositoryTest {
     void setup(){knownGoodState.set ();}
 
     @Test
-    void findAll() {
+    void shouldFindAll() {
         List<Enemy> enemies = repository.findAll ();
         assertNotNull (enemies);
     }
 
     @Test
-    void findById() {
+    void ShouldFindById() {
         Enemy goblin = repository.findById (1);
         Enemy expected = new Enemy (1,"Goblin", "Small", 10, 50, 5);
         assertNotNull (goblin);
@@ -34,14 +34,14 @@ class EnemyJdbcTemplateRepositoryTest {
     }
 
     @Test
-    void findByType() {
+    void shouldFindByType() {
         List<Enemy> smallEnemies= repository.findByType ("Small");
         assertNotNull (smallEnemies);
-        assertEquals (2,smallEnemies.size ());
+        assertEquals (3,smallEnemies.size ());
     }
 
     @Test
-    void add() {
+    void shouldAdd() {
         Enemy chicken = new Enemy (0, "Chicken", "Small", 5,10,3);
         Enemy actual = repository.add (chicken);
         assertNotNull (actual);
@@ -49,7 +49,7 @@ class EnemyJdbcTemplateRepositoryTest {
     }
 
     @Test
-    void update() {
+    void shouldUpdate() {
         Enemy expected = new Enemy (3,"High Elf", "Small", 30, 150, 7);
         Enemy elf=repository.findById (3);
         elf.setEnemyName ("High Elf");
@@ -61,7 +61,7 @@ class EnemyJdbcTemplateRepositoryTest {
     }
 
     @Test
-    void deleteById() {
+    void shouldDeleteById() {
         assertTrue (repository.deleteById (2));
     }
 }

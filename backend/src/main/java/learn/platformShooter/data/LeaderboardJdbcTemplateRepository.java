@@ -18,8 +18,9 @@ public class LeaderboardJdbcTemplateRepository implements LeaderboardRepository{
 
     @Override
     public List<Leaderboard> findAll() {
-        final String sql = "select leaderboard_id, user_id, username, score"
-                +"from leaderboard;";
+        final String sql = "select leaderboard_id, user_id, username, score "
+                +"from leaderboard "
+                +"order by score desc;";
         return jdbcTemplate.query (sql,new LeaderboardMapper());
     }
 

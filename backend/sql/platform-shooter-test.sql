@@ -12,7 +12,7 @@ create table `user` (
     last_name varchar(200) not null,
     username varchar (200) not null,
     email varchar(200) not null,
-    password varchar(200) not null,
+    `password` varchar(200) not null,
     favorite_color varchar (200) not null,
     gender varchar (200) not null
 );
@@ -40,9 +40,9 @@ create table leaderboard (
 
 create table item(
     item_id int primary key auto_increment,
-    name varchar(200) not null,
+    `name` varchar(200) not null,
     item_description TEXT not null,
-    type varchar(200) not null,
+    `type` varchar(200) not null,
     stat_increment double not null
 );
 
@@ -121,24 +121,26 @@ begin
         ('Vendor', 'Health',10),
         ('Guide','Speed' ,3);
 	-- Sample items Data
-    insert into item (name, item_description, type, stat_increment)
+    insert into item (`name`, item_description, `type`, stat_increment)
     values
         ('Health Potion', 'Restores health when consumed.', 'healing_potions', 20.0),
         ('Sword of Fire', 'A blazing sword that deals fire damage.', 'damage', 10.0),
         ('Speed Boots', 'Magical boots that enhance speed.', 'speed', 5.0),
         ('Health Booster', 'Increases max health.', 'max_health', 20.0); -- Increases max health by 20 points
     -- Sample User Data
-    insert into `user` (first_name, last_name, username, email, password, favorite_color, gender)
+    insert into `user` (first_name, last_name, username, email, `password`, favorite_color, gender)
     values
         ('John', 'Doe', 'johndoe', 'johndoe@example.com', 'password123', 'blue', 'male'),
         ('Jane', 'Smith', 'janesmith', 'janesmith@example.com', 'mypassword', 'red', 'female'),
-        ('Cake', 'Cat', 'CakeCat', 'CakeCat@example.com', 'adventure', 'white', 'female');
+        ('Cake', 'Cat', 'CakeCat', 'CakeCat@example.com', 'adventure', 'white', 'female'),
+        ('Marceline', 'Abadeer', 'Marcee', 'MarceAba@example.com', 'vampire', 'red', 'female');
 
     -- Sample Leaderboard Data
     insert into leaderboard (user_id, username, score)
     values
         (1, 'johndoe', 100),
-        (2, 'janesmith', 150);
+        (2, 'janesmith', 150),
+        (3,"CakeCat",200);
 
     -- Sample Player Character Data
     insert into player_character (user_id, time_played_in_seconds, characters_level, max_health, health, damage, speed, healing_potions)

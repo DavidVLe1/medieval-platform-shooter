@@ -45,7 +45,7 @@ class UserJdbcTemplateRepositoryTest {
         User newUser = new User ("Finn", "Mertins", "FinnTheHero", "FinnTheHero@example.com", "adventure", "blue", "male" );
         User actual = repository.add (newUser);
         assertNotNull (actual);
-        assertEquals (4,actual.getUserId ());
+        assertEquals (5,actual.getUserId ());
     }
 
     @Test
