@@ -10,6 +10,13 @@ public class GameEvents {
     public GameEvents() {
     }
 
+    public GameEvents(int playerCharacterId , int bossesKilled , boolean legendaryItemObtained , boolean gameCompleted) {
+        this.playerCharacterId = playerCharacterId;
+        this.bossesKilled = bossesKilled;
+        this.legendaryItemObtained = legendaryItemObtained;
+        this.gameCompleted = gameCompleted;
+    }
+
     public GameEvents(int gameEventsId , int playerCharacterId , int bossesKilled , boolean legendaryItemObtained , boolean gameCompleted) {
         this.gameEventsId = gameEventsId;
         this.playerCharacterId = playerCharacterId;

@@ -18,22 +18,31 @@ public class GameEventsJdbcTemplateRepository implements GameEventsRepository{
 
     @Override
     public List<GameEvents> findAll() { //not likely to be used as one instance of game events will be for one player character
-        final String sql = "select games_event_id, player_character_id, bosses_killed, legendary_item_obtained, game_completed "
+        final String sql = "select game_events_id, player_character_id, bosses_killed, legendary_item_obtained, game_completed "
                 +"from game_events;";
         return jdbcTemplate.query (sql, new GameEventsMapper ());
     }
 
     @Override
-    public GameEvents findById(int gameEventsId) {
-        final String sql = "select games_event_id, player_character_id, bosses_killed, legendary_item_obtained, game_completed "
-                +"from game_events"
-                +"where games_event_id = ?;";
+    public GameEvents findById(int gameEventsId) {//finding by events id might not be as useful as finding by player character id.
+        final String sql = "select game_events_id, player_character_id, bosses_killed, legendary_item_obtained, game_completed "
+                +"from game_events "
+                +"where game_events_id = ?;";
         return jdbcTemplate.query (sql, new GameEventsMapper (),gameEventsId).stream ().findFirst ().orElse (null);
     }
 
     @Override
+    public GameEvents findbyPlayerCharacterId(int playerCharacterId) {
+        final String sql = "select game_events_id, player_character_id, bosses_killed, legendary_item_obtained, game_completed "
+                +"from game_events "
+                +"where player_character_id = ?;";
+        return jdbcTemplate.query (sql, new GameEventsMapper (),playerCharacterId).stream ().findFirst ().orElse (null);
+    }
+
+
+    @Override
     public GameEvents add(GameEvents gameEvents) {
-        final String sql = "insert into gameEvents (player_character_id, bosses_killed, legendary_item_obtained, game_completed)"
+        final String sql = "insert into game_events (player_character_id, bosses_killed, legendary_item_obtained, game_completed) "
                 +"values (?,?,?,?);";
         KeyHolder keyHolder = new GeneratedKeyHolder ();
         int rowsAffected = jdbcTemplate.update (connection ->{
@@ -54,7 +63,7 @@ public class GameEventsJdbcTemplateRepository implements GameEventsRepository{
 
     @Override
     public boolean update(GameEvents gameEvents) {
-        final String sql = "update game_events set"
+        final String sql = "update game_events set "
                 +"player_character_id = ?, "
                 +"bosses_killed = ?, "
                 +"legendary_item_obtained = ?, "

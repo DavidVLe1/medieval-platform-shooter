@@ -146,7 +146,8 @@ begin
     insert into player_character (user_id, time_played_in_seconds, characters_level, max_health, health, damage, speed, healing_potions)
     values
         (1, 3600, 10.5,100, 100, 15, 8, 5),
-        (2, 2700, 8.0,70, 80, 10, 6, 3);
+        (2, 2700, 8.0,80, 70, 10, 6, 3),
+        (2, 5400, 12.5,120, 90, 18, 7, 1);
 
     -- Sample Game Events Data
     insert into game_events (player_character_id, bosses_killed, legendary_item_obtained, game_completed)
