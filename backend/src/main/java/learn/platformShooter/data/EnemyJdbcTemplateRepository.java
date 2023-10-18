@@ -70,7 +70,7 @@ public class EnemyJdbcTemplateRepository implements EnemyRepository{
                 +"enemy_type = ?, "
                 +"damage = ?, "
                 +"health = ?, "
-                +"speed = ?, "
+                +"speed = ? "
                 +"where enemy_id= ? ;";
 
         return jdbcTemplate.update (sql,

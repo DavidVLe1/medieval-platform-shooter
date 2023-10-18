@@ -66,7 +66,7 @@ public class ItemJdbcRepository implements ItemRepository {
                 +"name = ?, "
                 +"item_description = ?, "
                 +"type= ?, "
-                +"stat_increment= ?, "
+                +"stat_increment= ? "
                 +"where item_id= ?;";
         return jdbcTemplate.update (sql,
                 item.getName (),

@@ -55,7 +55,7 @@ public class NpcJdbcTemplateRepository implements NpcRepository{
         final String sql = "update npc set "
                 +"npc_name = ?, "
                 +"stat_increment_type = ?,"
-                +"stat_increment = ?, "
+                +"stat_increment = ? "
                 +"where npc_id = ?;";
         return jdbcTemplate.update (sql,
                 npc.getNpcName (),
