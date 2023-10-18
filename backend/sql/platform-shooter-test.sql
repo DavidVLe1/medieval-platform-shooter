@@ -69,7 +69,8 @@ create table enemy(
 create table npc(
     npc_id int primary key auto_increment,
     npc_name  varchar(200) not null,
-    stat_boost varchar(200)
+    stat_increment_type varchar(200) not null, 
+    stat_increment double not null
 );
 
 create table game_events(
@@ -80,34 +81,57 @@ create table game_events(
     game_completed boolean not null,
     foreign key (player_character_id) references player_character(player_character_id)
 );
+
+
 delimiter //
 create procedure set_known_good_state()
 begin
 
-	delete from game_events;
-	alter table game_events auto_increment = 1;
-	delete from world_stats;
-	alter table world_stats auto_increment = 1;
-	delete from achievements;
-	alter table achievements auto_increment = 1;
-	delete from leaderboard;
-	alter table leaderboard auto_increment = 1;
-	delete from player_character;
-	alter table player_character auto_increment = 1;
-	delete from `user`;
-	alter table `user` auto_increment = 1;
 	delete from enemy;
 	alter table enemy auto_increment = 1;
 	delete from items;
 	alter table items auto_increment = 1;
 	delete from npc;
 	alter table npc auto_increment = 1;
+    
+	delete from game_events;
+	alter table game_events auto_increment = 1;
+	delete from world_stats;
+	alter table world_stats auto_increment = 1;
+    
+	delete from leaderboard;
+	alter table leaderboard auto_increment = 1;
+    
+	delete from player_character;
+	alter table player_character auto_increment = 1;
+	delete from `user`;
+	alter table `user` auto_increment = 1;
 
+
+    -- Sample Enemy Data
+    insert into enemy (enemy_name, enemy_type, damage, health, speed)
+    values
+        ('Goblin', 'Small', 10, 50, 5),
+        ('Dragon', 'Boss', 100, 500, 20);
+
+    -- Sample NPC Data
+    insert into npc (npc_name,stat_increment_type, stat_increment)
+    values
+        ('Vendor', 'Health',10),
+        ('Guide','Speed' ,3);
+	-- Sample items Data
+    insert into items (name, item_description, type, stat_increment)
+    values
+        ('Health Potion', 'Restores health when consumed.', 'healing_potions', 20.0),
+        ('Sword of Fire', 'A blazing sword that deals fire damage.', 'damage', 10.0),
+        ('Speed Boots', 'Magical boots that enhance speed.', 'speed', 5.0),
+        ('Health Booster', 'Increases max health.', 'max_health', 20.0); -- Increases max health by 20 points
     -- Sample User Data
     insert into `user` (first_name, last_name, username, email, password, favorite_color, gender)
     values
         ('John', 'Doe', 'johndoe', 'johndoe@example.com', 'password123', 'blue', 'male'),
-        ('Jane', 'Smith', 'janesmith', 'janesmith@example.com', 'mypassword', 'red', 'female');
+        ('Jane', 'Smith', 'janesmith', 'janesmith@example.com', 'mypassword', 'red', 'female'),
+        ('Cake', 'Cat', 'CakeCat', 'CakeCat@example.com', 'adventure', 'white', 'female');
 
     -- Sample Leaderboard Data
     insert into leaderboard (user_id, username, score)
@@ -121,33 +145,16 @@ begin
         (1, 3600, 10.5,100, 100, 15, 8, 5),
         (2, 2700, 8.0,70, 80, 10, 6, 3);
 
-    -- Sample Enemy Data
-    insert into enemy (enemy_name, enemy_type, damage, health, speed)
-    values
-        ('Goblin', 'Small', 10, 50, 5),
-        ('Dragon', 'Boss', 100, 500, 20);
-
-    -- Sample NPC Data
-    insert into npc (npc_name, stat_boost)
-    values
-        ('Vendor', '["Health +10", "Damage +5"]'),
-        ('Guide', '["Speed +3", "Health +5"]');
     -- Sample Game Events Data
     insert into game_events (player_character_id, bosses_killed, legendary_item_obtained, game_completed)
     values
         (1, 2, true, true),
         (2, 1, false, true);
     -- Sample World stats Data
-    insert into world_stats (player_character_id, enemies_killed, items_used, times_died, characters_level)
+    insert into world_stats (player_character_id, enemies_killed, items_used, times_died)
     values
-        (1, 50, 10, 5, 15.5),
-        (2, 100, 25, 8, 20.0);
-    -- Sample items Data
-    insert into items (name, item_description, type, stat_increment)
-    values
-        ('Health Potion', 'Restores health when consumed.', 'healing_potions', 20.0),
-        ('Sword of Fire', 'A blazing sword that deals fire damage.', 'damage', 10.0),
-        ('Speed Boots', 'Magical boots that enhance speed.', 'speed', 5.0),
-        ('Health Booster', 'Increases max health.', 'max_health', 20.0); -- Increases max health by 20 points
+        (1, 50, 10, 5),
+        (2, 100, 25, 8);
+
 end//
 delimiter ;

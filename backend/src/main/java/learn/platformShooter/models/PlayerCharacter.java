@@ -4,7 +4,7 @@ public class PlayerCharacter {
     private int playerCharacterId;
     private int userId;
     private int timePlayedInSeconds;
-    private int charactersLevel;
+    private double charactersLevel;
     private double maxHealth;
     private double health;
     private double damage;
@@ -14,7 +14,7 @@ public class PlayerCharacter {
     public PlayerCharacter() {
     }
 
-    public PlayerCharacter(int playerCharacterId , int userId , int timePlayedInSeconds , int charactersLevel ,
+    public PlayerCharacter(int playerCharacterId , int userId , int timePlayedInSeconds , double charactersLevel ,
                            double maxHealth , double health , double damage , double speed , int healingPotions) {
         this.playerCharacterId = playerCharacterId;
         this.userId = userId;
@@ -51,11 +51,11 @@ public class PlayerCharacter {
         this.timePlayedInSeconds = timePlayedInSeconds;
     }
 
-    public int getCharactersLevel() {
+    public double getCharactersLevel() {
         return charactersLevel;
     }
 
-    public void setCharactersLevel(int charactersLevel) {
+    public void setCharactersLevel(double charactersLevel) {
         this.charactersLevel = charactersLevel;
     }
 

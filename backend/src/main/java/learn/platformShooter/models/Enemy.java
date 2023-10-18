@@ -1,5 +1,7 @@
 package learn.platformShooter.models;
 
+import java.util.Objects;
+
 public class Enemy {
     private int enemyId;
     private String enemyName;
@@ -66,5 +68,18 @@ public class Enemy {
 
     public void setSpeed(double speed) {
         this.speed = speed;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass () != o.getClass ()) return false;
+        Enemy enemy = (Enemy) o;
+        return enemyId == enemy.enemyId && Double.compare (damage , enemy.damage) == 0 && Double.compare (health , enemy.health) == 0 && Double.compare (speed , enemy.speed) == 0 && Objects.equals (enemyName , enemy.enemyName) && Objects.equals (enemyType , enemy.enemyType);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash (enemyId , enemyName , enemyType , damage , health , speed);
     }
 }

@@ -38,9 +38,9 @@ create table leaderboard (
 
 create table items(
     item_id int primary key auto_increment,
-    name varchar(200) not null,
+    `name` varchar(200) not null,
     item_description TEXT not null,
-    type varchar(200) not null,
+    `type` varchar(200) not null,
     stat_increment double not null
 );
 
@@ -67,7 +67,8 @@ create table enemy(
 create table npc(
     npc_id int primary key auto_increment,
     npc_name  varchar(200) not null,
-    stat_boost varchar(200)
+    stat_increment_type varchar(200) not null, 
+    stat_increment double not null
 );
 
 
