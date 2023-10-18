@@ -13,6 +13,14 @@ public class Enemy {
     public Enemy() {
     }
 
+    public Enemy(String enemyName , String enemyType , double damage , double health , double speed) {
+        this.enemyName = enemyName;
+        this.enemyType = enemyType;
+        this.damage = damage;
+        this.health = health;
+        this.speed = speed;
+    }
+
     public Enemy(int enemyId , String enemyName , String enemyType , double damage , double health , double speed) {
         this.enemyId = enemyId;
         this.enemyName = enemyName;
@@ -21,6 +29,8 @@ public class Enemy {
         this.health = health;
         this.speed = speed;
     }
+
+
 
     public int getEnemyId() {
         return enemyId;

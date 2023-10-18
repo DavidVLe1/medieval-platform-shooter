@@ -112,7 +112,8 @@ begin
     insert into enemy (enemy_name, enemy_type, damage, health, speed)
     values
         ('Goblin', 'Small', 10, 50, 5),
-        ('Dragon', 'Boss', 100, 500, 20);
+        ('Dragon', 'Boss', 100, 500, 20),
+        ('Elf', 'Small', 20, 100, 6);
 
     -- Sample NPC Data
     insert into npc (npc_name,stat_increment_type, stat_increment)
