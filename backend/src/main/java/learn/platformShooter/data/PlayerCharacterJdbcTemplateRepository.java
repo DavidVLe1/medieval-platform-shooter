@@ -28,7 +28,7 @@ public class PlayerCharacterJdbcTemplateRepository implements PlayerCharacterRep
     public PlayerCharacter findByUserId(int userId) {
         final String sql ="select player_character_id, user_id, time_played_in_seconds, characters_level, "
                 + "max_health, health, damage, speed, healing_potions "
-                + "from player_character"
+                + "from player_character "
                 + "where user_id = ?;";
         return jdbcTemplate.query (sql,new PlayerCharacterMapper (),userId).stream ().findFirst ().orElse (null);
     }
@@ -37,8 +37,8 @@ public class PlayerCharacterJdbcTemplateRepository implements PlayerCharacterRep
     public PlayerCharacter findByPlayerId(int playerCharacterId) {
         final String sql ="select player_character_id, user_id, time_played_in_seconds, characters_level, "
                 + "max_health, health, damage, speed, healing_potions "
-                + "from player_character"
-                + "where playerCharacterId = ?;";
+                + "from player_character "
+                + "where player_character_id = ?;";
         return jdbcTemplate.query (sql,new PlayerCharacterMapper (),playerCharacterId).stream ().findFirst ().orElse (null);
     }
 

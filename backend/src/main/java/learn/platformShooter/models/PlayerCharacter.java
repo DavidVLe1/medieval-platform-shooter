@@ -1,5 +1,7 @@
 package learn.platformShooter.models;
 
+import java.util.Objects;
+
 public class PlayerCharacter {
     private int playerCharacterId;
     private int userId;
@@ -97,5 +99,18 @@ public class PlayerCharacter {
 
     public void setHealingPotions(int healingPotions) {
         this.healingPotions = healingPotions;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass () != o.getClass ()) return false;
+        PlayerCharacter that = (PlayerCharacter) o;
+        return playerCharacterId == that.playerCharacterId && userId == that.userId && timePlayedInSeconds == that.timePlayedInSeconds && Double.compare (charactersLevel , that.charactersLevel) == 0 && Double.compare (maxHealth , that.maxHealth) == 0 && Double.compare (health , that.health) == 0 && Double.compare (damage , that.damage) == 0 && Double.compare (speed , that.speed) == 0 && healingPotions == that.healingPotions;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash (playerCharacterId , userId , timePlayedInSeconds , charactersLevel , maxHealth , health , damage , speed , healingPotions);
     }
 }
