@@ -8,7 +8,7 @@ import java.util.List;
 public interface GameEventsRepository {
     List<GameEvents> findAll();//not likely to be used as one instance of game events will be for one player character
     GameEvents findById(int gameEventsId);
-    GameEvents findbyPlayerCharacterId(int playerCharacterId);
+    GameEvents findByPlayerCharacterId(int playerCharacterId);
     GameEvents add(GameEvents gameEvents);
     boolean update( GameEvents gameEvents);
     @Transactional

@@ -32,7 +32,7 @@ class GameEventsJdbcTemplateRepositoryTest {
     }
     @Test
     void shouldFindByPlayerCharacterId(){
-        GameEvents eventsByPlayer1= repository.findbyPlayerCharacterId (1);
+        GameEvents eventsByPlayer1= repository.findByPlayerCharacterId (1);
         assertNotNull (eventsByPlayer1);
         assertEquals (1,eventsByPlayer1.getPlayerCharacterId ());
     }

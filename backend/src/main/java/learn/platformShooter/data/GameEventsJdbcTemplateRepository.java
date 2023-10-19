@@ -32,7 +32,7 @@ public class GameEventsJdbcTemplateRepository implements GameEventsRepository{
     }
 
     @Override
-    public GameEvents findbyPlayerCharacterId(int playerCharacterId) {
+    public GameEvents findByPlayerCharacterId(int playerCharacterId) {
         final String sql = "select game_events_id, player_character_id, bosses_killed, legendary_item_obtained, game_completed "
                 +"from game_events "
                 +"where player_character_id = ?;";
