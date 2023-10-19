@@ -62,11 +62,11 @@ public class ItemJdbcRepository implements ItemRepository {
 
     @Override
     public boolean update(Item item) {
-        final String sql = "update set item"
+        final String sql = "update item set "
                 +"name = ?, "
                 +"item_description = ?, "
-                +"type= ?, "
-                +"stat_increment= ? "
+                +"type = ?, "
+                +"stat_increment = ? "
                 +"where item_id= ?;";
         return jdbcTemplate.update (sql,
                 item.getName (),

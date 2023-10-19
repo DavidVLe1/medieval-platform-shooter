@@ -1,5 +1,7 @@
 package learn.platformShooter.models;
 
+import java.util.Objects;
+
 public class Item {
     private int itemId;
     private String name;
@@ -56,5 +58,18 @@ public class Item {
 
     public void setStatIncrement(double statIncrement) {
         this.statIncrement = statIncrement;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass () != o.getClass ()) return false;
+        Item item = (Item) o;
+        return itemId == item.itemId && Double.compare (statIncrement , item.statIncrement) == 0 && Objects.equals (name , item.name) && Objects.equals (itemDescription , item.itemDescription) && Objects.equals (type , item.type);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash (itemId , name , itemDescription , type , statIncrement);
     }
 }
