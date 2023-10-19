@@ -19,30 +19,30 @@ public class WorldStatsJdbcTemplateRepository implements WorldStatsRepository{
 
     @Override
     public List<WorldStats> findAll() {
-        final String sql = "select world_stats_id, player_character_id, enemies_killed, item_used, times_died"
+        final String sql = "select world_stats_id, player_character_id, enemies_killed, items_used, times_died "
                 +"from world_stats;";
         return jdbcTemplate.query (sql,new WorldStatsMapper ());
     }
 
     @Override
     public WorldStats findById(int worldStatsId) {
-        final String sql = "select world_stats_id, player_character_id, enemies_killed, item_used, times_died "
+        final String sql = "select world_stats_id, player_character_id, enemies_killed, items_used, times_died "
                 +"from world_stats "
                 +"where world_stats_id = ?;";
-        return jdbcTemplate.query (sql,new WorldStatsMapper()).stream ().findFirst ().orElse (null);
+        return jdbcTemplate.query (sql,new WorldStatsMapper(),worldStatsId).stream ().findFirst ().orElse (null);
     }
 
     @Override
     public WorldStats findByPlayerId(int playerCharacterId) {
-        final String sql = "select world_stats_id, player_character_id, enemies_killed, item_used, times_died "
+        final String sql = "select world_stats_id, player_character_id, enemies_killed, items_used, times_died "
                 +"from world_stats "
                 +"where player_character_id = ?;";
-        return jdbcTemplate.query (sql,new WorldStatsMapper()).stream ().findFirst ().orElse (null);
+        return jdbcTemplate.query (sql,new WorldStatsMapper(),playerCharacterId).stream ().findFirst ().orElse (null);
     }
 
     @Override
     public WorldStats add(WorldStats worldStats) {
-        final String sql = "insert into world_stats (player_character_id, enemies_killed, item_used, times_died )"
+        final String sql = "insert into world_stats (player_character_id, enemies_killed, items_used, times_died ) "
                 +"values (?,?,?,?);";
         KeyHolder keyHolder = new GeneratedKeyHolder ();
         int rowsAffected = jdbcTemplate.update (connection -> {
@@ -62,10 +62,10 @@ public class WorldStatsJdbcTemplateRepository implements WorldStatsRepository{
 
     @Override
     public boolean update(WorldStats worldStats) {
-        final String sql = "update world_stats set"
+        final String sql = "update world_stats set "
                 +"player_character_id = ?, "
                 +"enemies_killed = ?, "
-                +"item_used = ?, "
+                +"items_used = ?, "
                 +"times_died = ? "
                 +"where world_stats_id = ?;";
         return jdbcTemplate.update (sql,

@@ -1,5 +1,7 @@
 package learn.platformShooter.models;
 
+import java.util.Objects;
+
 public class WorldStats {
     private int worldStatsId;
     private int playerCharacterId;
@@ -56,5 +58,18 @@ public class WorldStats {
 
     public void setTimesDied(int timesDied) {
         this.timesDied = timesDied;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass () != o.getClass ()) return false;
+        WorldStats that = (WorldStats) o;
+        return worldStatsId == that.worldStatsId && playerCharacterId == that.playerCharacterId && enemiesKilled == that.enemiesKilled && itemsUsed == that.itemsUsed && timesDied == that.timesDied;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash (worldStatsId , playerCharacterId , enemiesKilled , itemsUsed , timesDied);
     }
 }
