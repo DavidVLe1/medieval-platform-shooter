@@ -197,8 +197,6 @@ class EnemyServiceTest {
     }
     @Test
     void shouldNotDeleteById(){
-        Enemy enemy = makeEnemy ();
-        enemy.setEnemyId (20);
         when(repository.deleteById (20)).thenReturn (false);
 
         Result<Enemy> result= service.deleteById (20);

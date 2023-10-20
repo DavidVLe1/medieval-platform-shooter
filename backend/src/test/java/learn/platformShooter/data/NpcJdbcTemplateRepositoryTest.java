@@ -41,7 +41,7 @@ class NpcJdbcTemplateRepositoryTest {
 
     @Test
     void update() {
-        Npc expected = new Npc (2,"Shoe Vendor","speed",5.0);
+        Npc expected = new Npc (2,"Shoe Vendor","Speed",5.0);
         assertTrue (repository.update (expected));
     }
 

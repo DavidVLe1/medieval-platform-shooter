@@ -188,8 +188,7 @@ class GameEventsServiceTest {
     }
     @Test
     void shouldDeleteById() {
-        GameEvents gameEvents = makeGameEvents ();
-        gameEvents.setGameEventsId (2);
+
         when(repository.deleteById (2)).thenReturn (true);
         Result<GameEvents> result = service.deleteById (2);
         assertEquals (ResultType.SUCCESS,result.getType ());
@@ -197,8 +196,6 @@ class GameEventsServiceTest {
 
     @Test
     void shouldNotDeleteById() {
-        GameEvents gameEvents = makeGameEvents ();
-        gameEvents.setGameEventsId (20);
         when(repository.deleteById (20)).thenReturn (false);
         Result<GameEvents> result = service.deleteById (20);
         assertEquals (ResultType.NOT_FOUND,result.getType ());

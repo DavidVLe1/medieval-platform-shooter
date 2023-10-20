@@ -65,14 +65,17 @@ public class NpcService {
     public Result<Npc> validate(Npc npc){
         Result<Npc> result = new Result<> ();
         if (npc == null) {
-            result.addMessage("Npc cannot be null", ResultType.INVALID);
+            result.addMessage("Npc cannot be null.", ResultType.INVALID);
             return result;
         }
         if (Validations.isNullOrBlank(npc.getNpcName ())) {
-            result.addMessage("Npc name is required", ResultType.INVALID);
+            result.addMessage("Npc name is required.", ResultType.INVALID);
         }
         if (Validations.isNullOrBlank(npc.getStatIncrementType ())) {
-            result.addMessage("Npc stat type is required", ResultType.INVALID);
+            result.addMessage("Npc stat type is required.", ResultType.INVALID);
+        }
+        if (npc.getStatIncrement ()<0) {
+            result.addMessage("Npc statIncrement can't be negative.", ResultType.INVALID);
         }
         return result;
     }

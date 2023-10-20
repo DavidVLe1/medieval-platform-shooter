@@ -170,8 +170,7 @@ class ItemServiceTest {
 
     @Test
     void shouldDeleteById() {
-        Item item = makeItem ();
-        item.setItemId (1);
+
         when(repository.deleteById (1)).thenReturn (true);
         Result<Item> result = service.deleteById (1);
         assertEquals (ResultType.SUCCESS,result.getType());
@@ -179,8 +178,7 @@ class ItemServiceTest {
     }
     @Test
     void shouldNotDeleteById() {
-        Item item = makeItem ();
-        item.setItemId (20);
+
         when(repository.deleteById (20)).thenReturn (false);
         Result<Item> result = service.deleteById (20);
         assertEquals (ResultType.NOT_FOUND,result.getType());
