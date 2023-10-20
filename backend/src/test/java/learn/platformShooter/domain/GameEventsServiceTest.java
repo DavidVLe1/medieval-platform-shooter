@@ -144,7 +144,7 @@ class GameEventsServiceTest {
     }
     @Test
     void shouldNotUpdate() {
-        //can't add null
+        //can't update null
         Result<GameEvents> result = service.update (null);
         assertEquals (ResultType.INVALID, result.getType ());
 
