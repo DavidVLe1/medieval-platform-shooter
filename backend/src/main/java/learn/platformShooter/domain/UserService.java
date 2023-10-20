@@ -18,6 +18,10 @@ public class UserService {
 
     public Result<User> add(User user){
         Result<User> result = validate (user);
+        if (repository.findByEmail(user.getEmail()) != null) {
+            result.addMessage("user is already in the system", ResultType.INVALID);
+        }
+
         if (!result.isSuccess()) {
             return result;
         }
@@ -49,7 +53,7 @@ public class UserService {
     public Result<User> deleteById(int userId){
         Result<User> result = new Result<> ();
         if (!repository.deleteById(userId)) {
-            String msg = String.format("User id: %s, not found", userId);
+            String msg = String.format("User id: %s, not found.", userId);
             result.addMessage(msg, ResultType.NOT_FOUND);
         }
         return result;

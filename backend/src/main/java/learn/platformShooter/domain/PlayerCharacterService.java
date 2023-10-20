@@ -32,6 +32,14 @@ public class PlayerCharacterService {
             result.addMessage("playerCharacterId cannot be set for `add` operation.", ResultType.INVALID);
             return result;
         }
+        if (playerCharacter.getTimePlayedInSeconds () != 0) {
+            result.addMessage("timePlayedInSeconds must be 0 for `add` operation.", ResultType.INVALID);
+            return result;
+        }
+        if (playerCharacter.getCharactersLevel () != 0) {
+            result.addMessage("charactersLevel must be 1 for `add` operation.", ResultType.INVALID);
+            return result;
+        }
         playerCharacter = repository.add(playerCharacter);
         result.setPayload(playerCharacter);
         return result;
