@@ -31,6 +31,9 @@ public class ItemService {
     }
     public Result<Item> update(Item item){
         Result<Item> result= validate(item);
+        if (!result.isSuccess()) {
+            return result;
+        }
 
         if (item.getItemId () <= 0) {//meaning this executes if zero or under
             result.addMessage("itemId must be set for `update` operation.", ResultType.INVALID);
@@ -46,7 +49,7 @@ public class ItemService {
     public Result<Item> deleteById(int itemId){
         Result<Item> result = new Result<> ();
         if (!repository.deleteById(itemId)) {
-            String msg = String.format("Item id: %s, not found", itemId);
+            String msg = String.format("Item id: %s, not found.", itemId);
             result.addMessage(msg, ResultType.NOT_FOUND);
         }
         return result;
@@ -55,17 +58,17 @@ public class ItemService {
     private Result<Item> validate(Item item){
         Result<Item> result = new Result<> ();
         if (item == null) {
-            result.addMessage("Item cannot be null", ResultType.INVALID);
+            result.addMessage("Item cannot be null.", ResultType.INVALID);
             return result;
         }
         if (Validations.isNullOrBlank(item.getName ())) {
-            result.addMessage("Item Name is required", ResultType.INVALID);
+            result.addMessage("Item Name is required.", ResultType.INVALID);
         }
         if (Validations.isNullOrBlank(item.getItemDescription ())) {
-            result.addMessage("Item description is required", ResultType.INVALID);
+            result.addMessage("Item description is required.", ResultType.INVALID);
         }
         if (Validations.isNullOrBlank(item.getType ())) {
-            result.addMessage("Item type is required", ResultType.INVALID);
+            result.addMessage("Item type is required.", ResultType.INVALID);
         }
         return result;
     }

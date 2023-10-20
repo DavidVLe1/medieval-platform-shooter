@@ -37,6 +37,10 @@ public class GameEventsService {
             result.addMessage("gameEvents LegendaryItemObtained cannot be true for `add` operation.", ResultType.INVALID);
             return result;
         }
+        if(gameEvents.getBossesKilled ()!=0){
+            result.addMessage("gameEvents bossesKilled cannot be anything other than 0 for `add` operation.", ResultType.INVALID);
+            return result;
+        }
         gameEvents = repository.add(gameEvents);
         result.setPayload(gameEvents);
         return result;
@@ -51,7 +55,7 @@ public class GameEventsService {
             return result;
         }
         if (!repository.update(gameEvents)) {
-            String msg = String.format("enemyId: %s, not found", gameEvents.getGameEventsId ());
+            String msg = String.format("gameEvents: %s, not found.", gameEvents.getGameEventsId ());
             result.addMessage(msg, ResultType.NOT_FOUND);
         }
         return result;
@@ -76,7 +80,7 @@ public class GameEventsService {
             result.addMessage("Player Character Id is required and must be more than 0.", ResultType.INVALID);
         }
         if (gameEvents.getBossesKilled ()<0) {
-            result.addMessage("Bosses Killed is required and must be 0 or more.", ResultType.INVALID);
+            result.addMessage("gameEvents bossesKilled can't be negative.", ResultType.INVALID);
         }
         return result;
     }
