@@ -64,6 +64,140 @@ class UserServiceTest {
     }
     @Test
     void shouldNotAdd() {
+        // can't add null
+        Result<User> result = service.add (null);
+        assertEquals (ResultType.INVALID,result.getType ());
+        //should not add when userId is not 0.
+        User user = makeUser ();
+        user.setEmail ("123123@gmail.com");
+        user.setUserId (2);
+        result=service.add (user);
+        assertEquals (ResultType.INVALID,result.getType ());
+        assertEquals ("userId cannot be set for `add` operation.",result.getMessages ().get (0));
+        //should not add duplicate email.
+        user=makeUser ();
+        user.setUserId (0);
+        user.setEmail ("johndoe@example.com");
+        when(repository.findByEmail ("johndoe@example.com")).thenReturn (makeUser ());
+        result=service.add (user);
+        assertEquals (ResultType.INVALID,result.getType ());
+        assertEquals ("user email is already in the system.",result.getMessages ().get (0));
+        //should not add empty/null first name.
+        user=makeUser ();
+        user.setUserId (0);
+        user.setEmail ("differentemail@gmail.com");
+        user.setFirstName ("");
+        result=service.add (user);
+        assertEquals (ResultType.INVALID,result.getType ());
+        assertEquals ("user firstName is required.",result.getMessages ().get (0));
+
+        user=makeUser ();
+        user.setUserId (0);
+        user.setEmail ("differentemail@gmail.com");
+        user.setFirstName (null);
+        result=service.add (user);
+        assertEquals (ResultType.INVALID,result.getType ());
+        assertEquals ("user firstName is required.",result.getMessages ().get (0));
+
+        //should not add empty/null last name.
+        user=makeUser ();
+        user.setUserId (0);
+        user.setEmail ("differentemail@gmail.com");
+        user.setLastName ("");
+        result=service.add (user);
+        assertEquals (ResultType.INVALID,result.getType ());
+        assertEquals ("user lastName is required.",result.getMessages ().get (0));
+
+        user=makeUser ();
+        user.setUserId (0);
+        user.setEmail ("differentemail@gmail.com");
+        user.setLastName (null);
+        result=service.add (user);
+        assertEquals (ResultType.INVALID,result.getType ());
+        assertEquals ("user lastName is required.",result.getMessages ().get (0));
+
+        //should not add empty/null username.
+        user=makeUser ();
+        user.setUserId (0);
+        user.setEmail ("differentemail@gmail.com");
+        user.setUsername ("");
+        result=service.add (user);
+        assertEquals (ResultType.INVALID,result.getType ());
+        assertEquals ("user username is required.",result.getMessages ().get (0));
+
+        user=makeUser ();
+        user.setUserId (0);
+        user.setEmail ("differentemail@gmail.com");
+        user.setUsername (null);
+        result=service.add (user);
+        assertEquals (ResultType.INVALID,result.getType ());
+        assertEquals ("user username is required.",result.getMessages ().get (0));
+
+        //should not add empty/null email.
+        user=makeUser ();
+        user.setUserId (0);
+        user.setEmail ("");
+        result=service.add (user);
+        assertEquals (ResultType.INVALID,result.getType ());
+        assertEquals ("user email is required.",result.getMessages ().get (0));
+
+        user=makeUser ();
+        user.setUserId (0);
+        user.setEmail (null);
+        result=service.add (user);
+        assertEquals (ResultType.INVALID,result.getType ());
+        assertEquals ("user email is required.",result.getMessages ().get (0));
+
+        //should not add empty/null password.
+        user=makeUser ();
+        user.setUserId (0);
+        user.setEmail ("differentemail@gmail.com");
+        user.setPassword ("");
+        result=service.add (user);
+        assertEquals (ResultType.INVALID,result.getType ());
+        assertEquals ("user password is required.",result.getMessages ().get (0));
+
+        user=makeUser ();
+        user.setUserId (0);
+        user.setEmail ("differentemail@gmail.com");
+        user.setPassword (null);
+        result=service.add (user);
+        assertEquals (ResultType.INVALID,result.getType ());
+        assertEquals ("user password is required.",result.getMessages ().get (0));
+
+        //should not add empty/null favorite color.
+        user=makeUser ();
+        user.setUserId (0);
+        user.setEmail ("differentemail@gmail.com");
+        user.setFavoriteColor ("");
+        result=service.add (user);
+        assertEquals (ResultType.INVALID,result.getType ());
+        assertEquals ("user favoriteColor is required.",result.getMessages ().get (0));
+
+        user=makeUser ();
+        user.setUserId (0);
+        user.setEmail ("differentemail@gmail.com");
+        user.setFavoriteColor (null);
+        result=service.add (user);
+        assertEquals (ResultType.INVALID,result.getType ());
+        assertEquals ("user favoriteColor is required.",result.getMessages ().get (0));
+
+        //should not add empty/null gender.
+        user=makeUser ();
+        user.setUserId (0);
+        user.setEmail ("differentemail@gmail.com");
+        user.setGender ("");
+        result=service.add (user);
+        assertEquals (ResultType.INVALID,result.getType ());
+        assertEquals ("user gender is required.",result.getMessages ().get (0));
+
+        user=makeUser ();
+        user.setUserId (0);
+        user.setEmail ("differentemail@gmail.com");
+        user.setGender (null);
+        result=service.add (user);
+        assertEquals (ResultType.INVALID,result.getType ());
+        assertEquals ("user gender is required.",result.getMessages ().get (0));
     }
 
     @Test
@@ -81,6 +215,140 @@ class UserServiceTest {
     }
     @Test
     void shouldNotUpdate() {
+        // can't update without set userId.
+        Result<User> result = service.update (null);
+        assertEquals (ResultType.INVALID, result.getType ());
+        //should not update when userId is 0.
+        User user = makeUser ();
+        user.setEmail ("123123@gmail.com");
+        user.setUserId (0);
+        result=service.update (user);
+        assertEquals (ResultType.INVALID,result.getType ());
+        //should not update duplicate email.
+        user=makeUser ();
+        user.setEmail ("johndoe@example.com");
+        when(repository.findByEmail ("johndoe@example.com")).thenReturn (makeUser ());
+        result=service.update (user);
+        assertEquals (ResultType.INVALID,result.getType ());
+        assertEquals ("user email is already in the system.",result.getMessages ().get (0));
+
+        //should not update empty/null first name.
+        user=makeUser ();
+        user.setUserId (0);
+        user.setEmail ("differentemail@gmail.com");
+        user.setFirstName ("");
+        result=service.update (user);
+        assertEquals (ResultType.INVALID,result.getType ());
+        assertEquals ("user firstName is required.",result.getMessages ().get (0));
+
+        user=makeUser ();
+        user.setUserId (0);
+        user.setEmail ("differentemail@gmail.com");
+        user.setFirstName (null);
+        result=service.update (user);
+        assertEquals (ResultType.INVALID,result.getType ());
+        assertEquals ("user firstName is required.",result.getMessages ().get (0));
+
+        //should not addupdate empty/null last name.
+        user=makeUser ();
+        user.setUserId (0);
+        user.setEmail ("differentemail@gmail.com");
+        user.setLastName ("");
+        result=service.update (user);
+        assertEquals (ResultType.INVALID,result.getType ());
+        assertEquals ("user lastName is required.",result.getMessages ().get (0));
+
+        user=makeUser ();
+        user.setUserId (0);
+        user.setEmail ("differentemail@gmail.com");
+        user.setLastName (null);
+        result=service.update (user);
+        assertEquals (ResultType.INVALID,result.getType ());
+        assertEquals ("user lastName is required.",result.getMessages ().get (0));
+
+        //should not update empty/null username.
+        user=makeUser ();
+        user.setUserId (0);
+        user.setEmail ("differentemail@gmail.com");
+        user.setUsername ("");
+        result=service.update (user);
+        assertEquals (ResultType.INVALID,result.getType ());
+        assertEquals ("user username is required.",result.getMessages ().get (0));
+
+        user=makeUser ();
+        user.setUserId (0);
+        user.setEmail ("differentemail@gmail.com");
+        user.setUsername (null);
+        result=service.update (user);
+        assertEquals (ResultType.INVALID,result.getType ());
+        assertEquals ("user username is required.",result.getMessages ().get (0));
+
+        //should not update empty/null email.
+        user=makeUser ();
+        user.setUserId (0);
+        user.setEmail ("");
+        result=service.update (user);
+        assertEquals (ResultType.INVALID,result.getType ());
+        assertEquals ("user email is required.",result.getMessages ().get (0));
+
+        user=makeUser ();
+        user.setUserId (0);
+        user.setEmail (null);
+        result=service.update (user);
+        assertEquals (ResultType.INVALID,result.getType ());
+        assertEquals ("user email is required.",result.getMessages ().get (0));
+
+        //should not update empty/null password.
+        user=makeUser ();
+        user.setUserId (0);
+        user.setEmail ("differentemail@gmail.com");
+        user.setPassword ("");
+        result=service.update (user);
+        assertEquals (ResultType.INVALID,result.getType ());
+        assertEquals ("user password is required.",result.getMessages ().get (0));
+
+        user=makeUser ();
+        user.setUserId (0);
+        user.setEmail ("differentemail@gmail.com");
+        user.setPassword (null);
+        result=service.update (user);
+        assertEquals (ResultType.INVALID,result.getType ());
+        assertEquals ("user password is required.",result.getMessages ().get (0));
+
+        //should not update empty/null favorite color.
+        user=makeUser ();
+        user.setUserId (0);
+        user.setEmail ("differentemail@gmail.com");
+        user.setFavoriteColor ("");
+        result=service.update (user);
+        assertEquals (ResultType.INVALID,result.getType ());
+        assertEquals ("user favoriteColor is required.",result.getMessages ().get (0));
+
+        user=makeUser ();
+        user.setUserId (0);
+        user.setEmail ("differentemail@gmail.com");
+        user.setFavoriteColor (null);
+        result=service.update (user);
+        assertEquals (ResultType.INVALID,result.getType ());
+        assertEquals ("user favoriteColor is required.",result.getMessages ().get (0));
+
+        //should not update empty/null gender.
+        user=makeUser ();
+        user.setUserId (0);
+        user.setEmail ("differentemail@gmail.com");
+        user.setGender ("");
+        result=service.update (user);
+        assertEquals (ResultType.INVALID,result.getType ());
+        assertEquals ("user gender is required.",result.getMessages ().get (0));
+
+        user=makeUser ();
+        user.setUserId (0);
+        user.setEmail ("differentemail@gmail.com");
+        user.setGender (null);
+        result=service.update (user);
+        assertEquals (ResultType.INVALID,result.getType ());
+        assertEquals ("user gender is required.",result.getMessages ().get (0));
+
     }
 
     @Test

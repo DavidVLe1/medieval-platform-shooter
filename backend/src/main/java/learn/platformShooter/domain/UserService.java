@@ -18,9 +18,6 @@ public class UserService {
 
     public Result<User> add(User user){
         Result<User> result = validate (user);
-        if (repository.findByEmail(user.getEmail()) != null) {
-            result.addMessage("user is already in the system", ResultType.INVALID);
-        }
 
         if (!result.isSuccess()) {
             return result;
@@ -36,6 +33,7 @@ public class UserService {
     }
     public Result<User> update(User user){
         Result<User> result = validate (user);
+
         if (!result.isSuccess()) {
             return result;
         }
@@ -65,6 +63,9 @@ public class UserService {
             result.addMessage("user cannot be null.", ResultType.INVALID);
             return result;
         }
+        if (repository.findByEmail(user.getEmail()) != null) {
+            result.addMessage("user email is already in the system.", ResultType.INVALID);
+        }
         if (Validations.isNullOrBlank(user.getFirstName ())) {
             result.addMessage("user firstName is required.", ResultType.INVALID);
         }
@@ -78,14 +79,15 @@ public class UserService {
             result.addMessage("user email is required.", ResultType.INVALID);
         }
         if (Validations.isNullOrBlank(user.getPassword ())) {
-            result.addMessage("user password is required", ResultType.INVALID);
+            result.addMessage("user password is required.", ResultType.INVALID);
         }
         if (Validations.isNullOrBlank(user.getFavoriteColor ())) {
-            result.addMessage("user favoriteColor is required", ResultType.INVALID);
+            result.addMessage("user favoriteColor is required.", ResultType.INVALID);
         }
         if (Validations.isNullOrBlank(user.getGender ())) {
-            result.addMessage("user gender is required", ResultType.INVALID);
+            result.addMessage("user gender is required.", ResultType.INVALID);
         }
+
         return result;
     }
 
