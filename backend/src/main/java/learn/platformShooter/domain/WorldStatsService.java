@@ -32,6 +32,22 @@ public class WorldStatsService {
             result.addMessage("worldStatsId cannot be set for `add` operation.", ResultType.INVALID);
             return result;
         }
+        if (worldStats.getPlayerCharacterId ()==0) {
+            result.addMessage("worldStats playerCharacterId must be set for `add` operation.", ResultType.INVALID);
+            return result;
+        }
+        if (worldStats.getEnemiesKilled ()!=0) {
+            result.addMessage("worldStats enemiesKilled cannot be set for `add` operation.", ResultType.INVALID);
+            return result;
+        }
+        if (worldStats.getItemsUsed ()!=0) {
+            result.addMessage("worldStats itemUsed cannot be set for `add` operation.", ResultType.INVALID);
+            return result;
+        }
+        if (worldStats.getTimesDied ()!=0) {
+            result.addMessage("worldStats times_died cannot be set for `add` operation.", ResultType.INVALID);
+            return result;
+        }
         worldStats = repository.add(worldStats);
         result.setPayload(worldStats);
         return result;
@@ -42,12 +58,17 @@ public class WorldStatsService {
             return result;
         }
 
+        if (worldStats.getPlayerCharacterId ()<0) {
+            result.addMessage("worldStats playerCharacterId can't be negative.", ResultType.INVALID);
+            return result;
+        }
+
         if (worldStats.getWorldStatsId () <= 0) {
             result.addMessage("worldStatsId must be set for `update` operation.", ResultType.INVALID);
             return result;
         }
         if (!repository.update(worldStats)) {
-            String msg = String.format("worldStatsId: %s, not found", worldStats.getWorldStatsId ());
+            String msg = String.format("worldStatsId: %s, not found.", worldStats.getWorldStatsId ());
             result.addMessage(msg, ResultType.NOT_FOUND);
         }
         return result;
@@ -55,7 +76,7 @@ public class WorldStatsService {
     public Result<WorldStats> deleteById(int worldStatsId){
         Result<WorldStats> result = new Result<> ();
         if (!repository.deleteById(worldStatsId)) {
-            String msg = String.format("worldStats id: %s, not found", worldStatsId);
+            String msg = String.format("worldStats id: %s, not found.", worldStatsId);
             result.addMessage(msg, ResultType.NOT_FOUND);
         }
         return result;
@@ -67,14 +88,12 @@ public class WorldStatsService {
             result.addMessage("worldStats cannot be null", ResultType.INVALID);
             return result;
         }
-        if (worldStats.getPlayerCharacterId ()<=0) {
-            result.addMessage("worldStats playerCharacterId is required to be more than 0.", ResultType.INVALID);
-        }
+
         if (worldStats.getEnemiesKilled ()<0) {
             result.addMessage("worldStats enemiesKilled is required to be 0 or more.", ResultType.INVALID);
         }
         if (worldStats.getItemsUsed ()<0) {
-            result.addMessage("worldStats itemUsed is required to be 0 or more", ResultType.INVALID);
+            result.addMessage("worldStats itemUsed is required to be 0 or more.", ResultType.INVALID);
         }
         if (worldStats.getTimesDied ()<0) {
             result.addMessage("worldStats times_died is required to be 0 or more.", ResultType.INVALID);
