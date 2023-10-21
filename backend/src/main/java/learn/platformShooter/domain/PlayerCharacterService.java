@@ -36,7 +36,7 @@ public class PlayerCharacterService {
             result.addMessage("timePlayedInSeconds must be 0 for `add` operation.", ResultType.INVALID);
             return result;
         }
-        if (playerCharacter.getCharactersLevel () != 0) {
+        if (playerCharacter.getCharactersLevel () != 1) {
             result.addMessage("charactersLevel must be 1 for `add` operation.", ResultType.INVALID);
             return result;
         }
@@ -56,7 +56,7 @@ public class PlayerCharacterService {
             return result;
         }
         if (!repository.update(playerCharacter)) {
-            String msg = String.format("playerCharacterId: %s, not found", playerCharacter.getPlayerCharacterId ());
+            String msg = String.format("playerCharacterId: %s, not found.", playerCharacter.getPlayerCharacterId ());
             result.addMessage(msg, ResultType.NOT_FOUND);
         }
         return result;
@@ -81,10 +81,10 @@ public class PlayerCharacterService {
             result.addMessage("playerCharacter userId is required to be more than 0.", ResultType.INVALID);
         }
         if(playerCharacter.getTimePlayedInSeconds ()<0){
-            result.addMessage("playerCharacter timePlayedInSeconds is required to be more than or equal to 0.", ResultType.INVALID);
+            result.addMessage("playerCharacter timePlayedInSeconds can't be negative.", ResultType.INVALID);
         }
         if(playerCharacter.getCharactersLevel ()<=0){
-            result.addMessage("playerCharacter level is required to be more than 0.", ResultType.INVALID);
+            result.addMessage("playerCharacter level can't be less than 1 when adding.", ResultType.INVALID);
         }
         if(playerCharacter.getMaxHealth ()<=0){
             result.addMessage("playerCharacter maxHealth is required to be more than 0.", ResultType.INVALID);
