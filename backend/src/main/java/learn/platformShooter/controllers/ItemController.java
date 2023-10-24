@@ -25,7 +25,7 @@ public class ItemController {
         return itemService.findAll ();
     }
 
-    @GetMapping("{/itemType}")
+    @GetMapping("/{itemType}")
     public List<Item> findByType(@PathVariable String itemType) {
         return itemService.findByType (itemType);
     }
