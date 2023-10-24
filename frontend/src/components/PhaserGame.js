@@ -48,6 +48,7 @@ const PhaserGame = () => {
     var enemy1Health = 30;
     var enemy1Speed = 4;
     var enemy1Killed = false;
+    var bossKilled=false;
     var winMessage;
     var loseMessage;
     var greyOverlay;
@@ -152,6 +153,7 @@ const PhaserGame = () => {
       sfx = this.sound.add('theme');
       sfx.setVolume(0.05); // Adjust the volume as needed (0.5 means 50% volume)
       sfx.play();
+
 
 
       //---------------  Our player animations, turning, walking left and walking right.---------------------------------------------------
@@ -342,6 +344,10 @@ const PhaserGame = () => {
       healthText.setText('Health: ' + healthPoints);//update health.
       this.physics.world.overlap(playerBullets, enemy1, enemyHitCallback, null, this); //handle enemy hit by bullet
       this.physics.world.overlap(playerBullets, boss, enemyHitCallback, null, this); //handle boss hit by bullet
+
+      if(enemy1Killed&& !boss && stage===2 && stars.countActive(true) === 0){
+        createBoss.call(this);
+      }
       //---------------------------check if player is invincible-----------------------
       if (isInvincible) {
         // Call the function to make the player flicker between red and white tints
@@ -504,34 +510,25 @@ const PhaserGame = () => {
       // You might want to set its initial position off-screen or hidden
       // so that it only appears after collecting the stars.
     }
-
     function collectStar(player, star) {
       star.disableBody(true, true);
       // Add and update the score
       score += 10;
       scoreText.setText('Score: ' + score);
-
-      if (stars.countActive(true) === 0 && stage < 2) {
-        // A new batch of stars to collect
-        stars.children.iterate(function (child) {
-          child.enableBody(true, child.x, 0, true, true);
-        });
-        var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
-        var bomb = bombs.create(x, 16, 'bomb');
-        bomb.setBounce(1);
-        bomb.setCollideWorldBounds(true);
-        bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
-
-        // Check if the stage is now 2 and create the boss
-        if (stage === 1) {
-          stage += 1;
-          // Create the boss only once when stage 2 is entered
-          if(!boss){
-
-            createBoss.call(this);
-          }
+    
+      if(stage<1){
+        if (stars.countActive(true) === 0 && stage < 2) {
+          // A new batch of stars to collect
+          stars.children.iterate(function (child) {
+            child.enableBody(true, child.x, 0, true, true);
+          });
+      
+          var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+          var bomb = bombs.create(x, 16, 'bomb');
+          bomb.setBounce(1);
+          bomb.setCollideWorldBounds(true);
+          bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
         }
-
       }
 
     }
@@ -661,8 +658,12 @@ const PhaserGame = () => {
           bossHealth -= playerDamage;
 
           if (bossHealth <= 0) {
+            if(!bossKilled){
+              score += 1500; // Add points for defeating the boss
+            }
+            bossKilled=true;
             boss.destroy(); // Destroy the boss
-            score += 1500; // Add points for defeating the boss
+
             // Show the win message and grey overlay
             winMessage.setVisible(true);
             greyOverlay.setVisible(true);
@@ -673,9 +674,14 @@ const PhaserGame = () => {
           enemy1Health -= playerDamage;
 
           if (enemy1Health <= 0) {
+            if(!enemy1Killed){
+              score += 500; // Add points for defeating an enemy
+              stage += 1;
+            }
             enemy1Killed = true;
             targetHit.destroy(); // Destroy the enemy
-            score += 500; // Add points for defeating an enemy
+
+
           }
         }
 
