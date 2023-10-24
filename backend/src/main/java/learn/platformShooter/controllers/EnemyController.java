@@ -3,7 +3,6 @@ package learn.platformShooter.controllers;
 import learn.platformShooter.domain.EnemyService;
 import learn.platformShooter.domain.Result;
 import learn.platformShooter.models.Enemy;
-import learn.platformShooter.models.GameEvents;
 import learn.platformShooter.models.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
