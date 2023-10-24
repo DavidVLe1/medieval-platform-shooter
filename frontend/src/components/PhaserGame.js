@@ -47,7 +47,10 @@ const PhaserGame = () => {
     var enemy1Damage = 5;
     var enemy1Health = 30;
     var enemy1Speed = 4;
-    var enemy1Killed=false;
+    var enemy1Killed = false;
+    var winMessage;
+    var loseMessage;
+    var greyOverlay;
     // var enemy2;
     var boss;
     var bossHealth = 100;
@@ -63,6 +66,8 @@ const PhaserGame = () => {
       whiteTint: 0xffffff,
     };
     const purpleTint = 0x800080;
+
+
 
     var game = new Phaser.Game(config);
 
@@ -294,20 +299,43 @@ const PhaserGame = () => {
         if (player.active === false) {
           return;
         }
-
         // Get a bullet from the playerBullets group
         const bullet = playerBullets.get().setActive(true).setVisible(true);
-
         if (bullet) {
           // Adjust the bullet's direction and spawn offset based on the player's direction
-
-
           bullet.fire(player, isFacingLeft, 20);
           // Add a collision event to handle damage to the enemy
-
         }
       }
+      //-------------------------Win Message-----------------------------
+      winMessage = this.add.text(config.width / 2, config.height / 2, 'You Won!', {
+        fontSize: '64px',
+        fill: '#ffffff',
+        fontFamily: 'Arial'
+      });
+      winMessage.setOrigin(0.5);
+      winMessage.setScrollFactor(0);
+      winMessage.setDepth(2); // Ensure the message appears on top of other elements
 
+      // Hide the win message initially
+      winMessage.setVisible(false);
+      //-------------------------LOSE Message-----------------------------
+      loseMessage = this.add.text(config.width / 2, config.height / 2, 'You Lose', {
+        fontSize: '64px',
+        fill: '#ff0000', // Red color for a lose message
+        fontFamily: 'Arial'
+      });
+      loseMessage.setOrigin(0.5);
+      loseMessage.setScrollFactor(0);
+      loseMessage.setDepth(2);
+      loseMessage.setVisible(false); // Initially, hide the "You Lose" message
+      //-------------------------------------GameOVer greyed Screen--------------------------------
+      greyOverlay = this.add.rectangle(0, 0, config.width, config.height, 0x000000, 0.7);
+      greyOverlay.setOrigin(0);
+      greyOverlay.setScrollFactor(0);
+      greyOverlay.setDepth(1); // Place it below the win message but above the game elements
+      // Hide the grey overlay initially
+      greyOverlay.setVisible(false);
     }
 
     function update() {
@@ -324,7 +352,6 @@ const PhaserGame = () => {
       //---------------------check gameover --------------------------------------
       if (gameOver) {
         sfx.stop();
-        player.setTint(0xff0000);
         this.physics.pause();
         clearInterval(timer); // Stop the timer when the game is over
         return;
@@ -408,56 +435,57 @@ const PhaserGame = () => {
       }
       //---------------------------------------------------BOSS LOGIC!--------------------------------------------------------
       // Detect player's position
-      if(stage===2){
-        const playerX = player.x;
-        const bossX = boss.x;
-        // Define the boss's movement logic here
-        if (bossHealth > 0) {
-          if (!hasDashed) {
-            if (player.x < boss.x) {
-              // Player is to the left of the boss, so make the boss dash left
-              boss.anims.play('bossDashAttack', true);
-              boss.setVelocityX(-bossDashSpeed * 30);
-              boss.flipX = true;
-            } else if (player.x > boss.x) {
-              // Player is to the right of the boss, so make the boss dash right
-              boss.anims.play('bossDashAttack', true);
-              boss.setVelocityX(bossDashSpeed * 30);
-              boss.flipX = false;
-            } else {
-              // Player is at the same position as the boss, so boss can perform other actions
-              // For example, make the boss idle or jump
-              boss.anims.play('idleBoss', true);
-              boss.setVelocityX(0);
-              boss.setVelocityY(0);
-            }
-  
-            hasDashed = true;
-  
-            // Start a timer to reset the boss's velocity and play idle animation
-            this.time.addEvent({
-              delay: 1000,
-              callback: () => {
-                boss.setVelocityX(0);
+      if (stage === 2 && enemy1Killed) {
+        // Check if the boss object exists
+        if (boss) {
+          const playerX = player.x;
+          const bossX = boss.x;
+
+          // Define the boss's movement logic here
+          if (bossHealth > 0) {
+            if (!hasDashed) {
+              if (player.x < boss.x) {
+                // Player is to the left of the boss, so make the boss dash left
+                boss.anims.play('bossDashAttack', true);
+                boss.setVelocityX(-bossDashSpeed * 30);
+                boss.flipX = true;
+              } else if (player.x > boss.x) {
+                // Player is to the right of the boss, so make the boss dash right
+                boss.anims.play('bossDashAttack', true);
+                boss.setVelocityX(bossDashSpeed * 30);
+                boss.flipX = false;
+              } else {
+                // Player is at the same position as the boss, so boss can perform other actions
+                // For example, make the boss idle or jump
                 boss.anims.play('idleBoss', true);
-  
-                // Create a timer to allow the boss to dash again after a certain interval
-                this.time.addEvent({
-                  delay: 3000,
-                  callback: () => {
-                    hasDashed = false;
-                  },
-                  callbackScope: this,
-                });
-              },
-              callbackScope: this,
-            });
+                boss.setVelocityX(0);
+                boss.setVelocityY(0);
+              }
+              hasDashed = true;
+
+              // Start a timer to reset the boss's velocity and play idle animation
+              this.time.addEvent({
+                delay: 1000,
+                callback: () => {
+                  boss.setVelocityX(0);
+                  boss.anims.play('idleBoss', true);
+
+                  // Create a timer to allow the boss to dash again after a certain interval
+                  this.time.addEvent({
+                    delay: 3000,
+                    callback: () => {
+                      hasDashed = false;
+                    },
+                    callbackScope: this,
+                  });
+                },
+                callbackScope: this,
+              });
+            }
           }
         }
       }
-      
     }
-
     function createBoss() {
       //boss
       // Set properties for the boss (position, animations, etc.)
@@ -478,32 +506,34 @@ const PhaserGame = () => {
     }
 
     function collectStar(player, star) {
-
       star.disableBody(true, true);
-      //Add and update the score
+      // Add and update the score
       score += 10;
       scoreText.setText('Score: ' + score);
 
-      if (stars.countActive(true) === 0 && stage <= 2) {
-        //  A new batch of stars to collect
+      if (stars.countActive(true) === 0 && stage < 2) {
+        // A new batch of stars to collect
         stars.children.iterate(function (child) {
-
           child.enableBody(true, child.x, 0, true, true);
-
         });
-
         var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
-
         var bomb = bombs.create(x, 16, 'bomb');
         bomb.setBounce(1);
         bomb.setCollideWorldBounds(true);
         bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
-        stage += 1;
+
         // Check if the stage is now 2 and create the boss
-        if (stage === 2 && enemy1Killed) {
-          createBoss.call(this);
+        if (stage === 1) {
+          stage += 1;
+          // Create the boss only once when stage 2 is entered
+          if(!boss){
+
+            createBoss.call(this);
+          }
         }
+
       }
+
     }
     function hitBomb(player, bomb) {
       // Play the "hurt" sound effect when the player gets hit
@@ -520,7 +550,8 @@ const PhaserGame = () => {
         sfxGameOver.play();
         gameOver = true;
         player.anims.play('die', true);
-
+        loseMessage.setVisible(true);
+        greyOverlay.setVisible(true);
       }
 
 
@@ -554,6 +585,8 @@ const PhaserGame = () => {
           sfxGameOver.play();
           gameOver = true;
           player.anims.play('die', true);
+          loseMessage.setVisible(true);
+          greyOverlay.setVisible(true);
         }
 
         // Set the player as invincible and start the timer
@@ -589,6 +622,8 @@ const PhaserGame = () => {
           sfxGameOver.play();
           gameOver = true;
           player.anims.play('die', true);
+          loseMessage.setVisible(true);
+          greyOverlay.setVisible(true);
         }
 
         // Set the player as invincible and start the timer
@@ -628,13 +663,17 @@ const PhaserGame = () => {
           if (bossHealth <= 0) {
             boss.destroy(); // Destroy the boss
             score += 1500; // Add points for defeating the boss
+            // Show the win message and grey overlay
+            winMessage.setVisible(true);
+            greyOverlay.setVisible(true);
+            gameOver = true;
           }
         } else {
           // Handle enemy hit
           enemy1Health -= playerDamage;
 
           if (enemy1Health <= 0) {
-            enemy1Killed=true;
+            enemy1Killed = true;
             targetHit.destroy(); // Destroy the enemy
             score += 500; // Add points for defeating an enemy
           }
