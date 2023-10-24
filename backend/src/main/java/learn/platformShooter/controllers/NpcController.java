@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/npc")
+@RequestMapping("/api/npc")
 public class NpcController {
     private final NpcService npcService;
 

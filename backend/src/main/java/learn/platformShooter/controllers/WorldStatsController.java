@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/worldStats")
 public class WorldStatsController {
     private final WorldStatsService worldStatsService;
     public WorldStatsController(WorldStatsService worldStatsService){this.worldStatsService=worldStatsService;}
