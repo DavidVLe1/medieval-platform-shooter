@@ -21,7 +21,7 @@ public class LeaderboardController {
         return leaderboardService.findAll ();
     }
 
-    @GetMapping("/{LeaderboardId}")
+    @GetMapping("/{leaderboardId}")
     public ResponseEntity<Leaderboard> findById(@PathVariable int leaderboardId){
         Leaderboard leaderboard=leaderboardService.findById (leaderboardId);
         if(leaderboard==null){

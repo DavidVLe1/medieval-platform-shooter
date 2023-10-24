@@ -29,10 +29,6 @@ public class LeaderboardService {
             result.addMessage("leaderboardId cannot be set for `add` operation.", ResultType.INVALID);
             return result;
         }
-        if (leaderboard.getScore () != 0) {
-            result.addMessage("leaderboard score must be 0 for `add` operation.", ResultType.INVALID);
-            return result;
-        }
         leaderboard = repository.add(leaderboard);
         result.setPayload(leaderboard);
         return result;

@@ -60,13 +60,6 @@ class LeaderboardServiceTest {
         result=service.add (leaderboard);
         assertEquals (ResultType.INVALID,result.getType ());
         assertEquals ("leaderboardId cannot be set for `add` operation.", result.getMessages ().get (0));
-        //leaderboard score must be 0 for add.
-        leaderboard = makeLeaderboard ();
-        leaderboard.setScore (200);
-        leaderboard.setLeaderboardId (0);
-        result=service.add (leaderboard);
-        assertEquals (ResultType.INVALID,result.getType ());
-        assertEquals ("leaderboard score must be 0 for `add` operation.", result.getMessages ().get (0));
         //leaderboard username is required
         leaderboard=makeLeaderboard ();
         leaderboard.setScore (0);
