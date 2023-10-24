@@ -1,13 +1,13 @@
 package learn.platformShooter.controllers;
 
 import learn.platformShooter.domain.EnemyService;
+import learn.platformShooter.domain.Result;
 import learn.platformShooter.models.Enemy;
+import learn.platformShooter.models.GameEvents;
+import learn.platformShooter.models.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,6 +35,33 @@ public class EnemyController {
     }
 
     //implement create
+    @PostMapping
+    public ResponseEntity<Object> add(@RequestBody Enemy enemy){
+        Result<Enemy> result = enemyService.add (enemy);
+        if (result.isSuccess()) {
+            return new ResponseEntity<>(result.getPayload(), HttpStatus.CREATED);
+        }
+        return ErrorResponse.build(result);
+    }
     //implement update
+    @PutMapping("/{enemyId}")
+    public ResponseEntity<Object> update(@PathVariable int enemyId,@RequestBody Enemy enemy) {
+        if (enemyId != enemy.getEnemyId ()) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+        Result<Enemy> result = enemyService.update (enemy);
+        if (result.isSuccess()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return ErrorResponse.build(result);
+    }
     //implement delete
+    @DeleteMapping("/{enemyId}")
+    public ResponseEntity<User> deleteById(@PathVariable int enemyId) {
+        Result<Enemy> result =enemyService.deleteById (enemyId);
+        if (result.isSuccess ()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 }

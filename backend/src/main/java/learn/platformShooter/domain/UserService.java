@@ -22,7 +22,9 @@ public class UserService {
         if (!result.isSuccess()) {
             return result;
         }
-
+        if (repository.findByEmail(user.getEmail()) != null) {
+            result.addMessage("user email is already in the system.", ResultType.INVALID);
+        }
         if (user.getUserId () != 0) {
             result.addMessage("userId cannot be set for `add` operation.", ResultType.INVALID);
             return result;
@@ -63,9 +65,7 @@ public class UserService {
             result.addMessage("user cannot be null.", ResultType.INVALID);
             return result;
         }
-        if (repository.findByEmail(user.getEmail()) != null) {
-            result.addMessage("user email is already in the system.", ResultType.INVALID);
-        }
+
         if (Validations.isNullOrBlank(user.getFirstName ())) {
             result.addMessage("user firstName is required.", ResultType.INVALID);
         }

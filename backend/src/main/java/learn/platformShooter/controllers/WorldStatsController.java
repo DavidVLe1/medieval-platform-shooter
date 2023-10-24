@@ -1,12 +1,12 @@
 package learn.platformShooter.controllers;
 
+import learn.platformShooter.domain.Result;
 import learn.platformShooter.domain.WorldStatsService;
+import learn.platformShooter.models.User;
 import learn.platformShooter.models.WorldStats;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -36,6 +36,33 @@ public class WorldStatsController {
         return ResponseEntity.ok (worldStats);
     }
     //implement create
+    @PostMapping
+    public ResponseEntity<Object> add(@RequestBody WorldStats worldStats){
+        Result<WorldStats> result = worldStatsService.add (worldStats);
+        if (result.isSuccess()) {
+            return new ResponseEntity<>(result.getPayload(), HttpStatus.CREATED);
+        }
+        return ErrorResponse.build(result);
+    }
     //implement update
+    @PutMapping("/{worldStatsId}")
+    public ResponseEntity<Object> update (@PathVariable int worldStatsId, @RequestBody WorldStats worldStats){
+        if(worldStatsId!=worldStats.getWorldStatsId ()){
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+        Result<WorldStats> result = worldStatsService.update (worldStats);
+        if (result.isSuccess()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return ErrorResponse.build(result);
+    }
     //implement delete
+    @DeleteMapping("/{worldStatsId}")
+    public ResponseEntity<Object> deleteById(@PathVariable int worldStatsId){
+        Result<WorldStats> result = worldStatsService.deleteById (worldStatsId);
+        if (result.isSuccess ()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 }

@@ -1,13 +1,12 @@
 package learn.platformShooter.controllers;
 
 import learn.platformShooter.domain.PlayerCharacterService;
+import learn.platformShooter.domain.Result;
 import learn.platformShooter.models.PlayerCharacter;
+import learn.platformShooter.models.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -39,7 +38,33 @@ public class PlayerCharacterController {
     }
 
     //implement create
+    @PostMapping
+    public ResponseEntity<Object> add(@RequestBody PlayerCharacter playerCharacter){
+        Result<PlayerCharacter> result = playerCharacterService.add (playerCharacter);
+        if (result.isSuccess()) {
+            return new ResponseEntity<>(result.getPayload(), HttpStatus.CREATED);
+        }
+        return ErrorResponse.build(result);
+    }
     //implement update
+    @PutMapping("/{playerCharacterId}")
+    public ResponseEntity<Object> update(@PathVariable int playerCharacterId, @RequestBody PlayerCharacter playerCharacter){
+        if(playerCharacterId!=playerCharacter.getPlayerCharacterId ()){
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+        Result<PlayerCharacter> result = playerCharacterService.update (playerCharacter);
+        if (result.isSuccess()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return ErrorResponse.build(result);
+    }
     //implement delete
-
+    @DeleteMapping("/{playerCharacterId}")
+    public ResponseEntity<PlayerCharacter> deleteById(@PathVariable int playerCharacterId){
+        Result<PlayerCharacter> result = playerCharacterService.deleteById (playerCharacterId);
+        if(result.isSuccess ()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 }

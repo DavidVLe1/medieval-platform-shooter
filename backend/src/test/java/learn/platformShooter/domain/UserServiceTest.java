@@ -224,13 +224,6 @@ class UserServiceTest {
         user.setUserId (0);
         result=service.update (user);
         assertEquals (ResultType.INVALID,result.getType ());
-        //should not update duplicate email.
-        user=makeUser ();
-        user.setEmail ("johndoe@example.com");
-        when(repository.findByEmail ("johndoe@example.com")).thenReturn (makeUser ());
-        result=service.update (user);
-        assertEquals (ResultType.INVALID,result.getType ());
-        assertEquals ("user email is already in the system.",result.getMessages ().get (0));
 
         //should not update empty/null first name.
         user=makeUser ();

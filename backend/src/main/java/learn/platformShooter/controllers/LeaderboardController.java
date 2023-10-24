@@ -1,13 +1,12 @@
 package learn.platformShooter.controllers;
 
 import learn.platformShooter.domain.LeaderboardService;
+import learn.platformShooter.domain.Result;
 import learn.platformShooter.models.Leaderboard;
+import learn.platformShooter.models.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,7 +30,33 @@ public class LeaderboardController {
         return ResponseEntity.ok (leaderboard);
     }
     //implement create
+    @PostMapping
+    public ResponseEntity<Object> add(@RequestBody Leaderboard leaderboard){
+        Result<Leaderboard> result = leaderboardService.add (leaderboard);
+        if (result.isSuccess()) {
+            return new ResponseEntity<>(result.getPayload(), HttpStatus.CREATED);
+        }
+        return ErrorResponse.build(result);
+    }
     //implement update
+    @PutMapping("/{leaderboardId}")
+    public ResponseEntity<Object> update(@PathVariable int leaderboardId,@RequestBody Leaderboard leaderboard) {
+        if (leaderboardId != leaderboard.getUserId ()) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+        Result<Leaderboard> result = leaderboardService.update (leaderboard);
+        if (result.isSuccess()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return ErrorResponse.build(result);
+    }
     //implement delete
-
+    @DeleteMapping("/{leaderboardId}")
+    public ResponseEntity<User> deleteById(@PathVariable int leaderboardId) {
+        Result<Leaderboard> result =leaderboardService.deleteById (leaderboardId);
+        if (result.isSuccess ()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 }
