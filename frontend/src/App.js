@@ -26,6 +26,24 @@ function App() {
     setUserData(userData);
   }
 
+ // Load data from localStorage on component mount
+ useEffect(() => {
+  const isAuthenticatedFromStorage = localStorage.getItem("isAuthenticated") === "true";
+  const isUserIdFromStorage = parseInt(localStorage.getItem("isUserId"), 10) || 0;
+  const userDataFromStorage = JSON.parse(localStorage.getItem("userData")) || {};
+
+  setIsAuthenticated(isAuthenticatedFromStorage);
+  setisUserId(isUserIdFromStorage);
+  setUserData(userDataFromStorage);
+}, []);
+
+// Save data to localStorage when data changes
+useEffect(() => {
+  localStorage.setItem("isAuthenticated", isAuthenticated.toString());
+  localStorage.setItem("isUserId", isUserId.toString());
+  localStorage.setItem("userData", JSON.stringify(userData));
+}, [isAuthenticated, isUserId, userData]);
+
   const authValues = {
     isAuthenticated,
     handleAuthentication,
