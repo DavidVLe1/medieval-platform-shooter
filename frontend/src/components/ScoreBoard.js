@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ScoreBoard.css'; // Import a CSS file for styling
-export default function ScoreBoard(handleAuthentication, isAuthenticated ,handleUserId, isUserId) {
+export default function ScoreBoard() {
     const [scores,setScores] = useState([]);
     const navigate=useNavigate();
 

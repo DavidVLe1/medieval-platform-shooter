@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import AuthContext from "./context/AuthContext";
 
-export default function Logout({ handleAuthentication, handleUserData }) {
+export default function Logout() {
+    const {handleAuthentication, handleUserData,handleUserId}=useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleLogout = () => {
     handleAuthentication(false);
     handleUserData({});
+    handleUserId(0);
     navigate("/");
   };
 

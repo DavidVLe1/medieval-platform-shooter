@@ -1,7 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import AuthContext from "./context/AuthContext";
 
-export default function SignUp({ handleAuthentication, handleUserId, isUserId,handleUserData }) {
+export default function SignUp() {
+    const { handleAuthentication, handleUserId,handleUserData }=useContext(AuthContext);
     const [signUpFormData, setSignUpFormData] = useState({
         userId: 0,
         firstName: "",

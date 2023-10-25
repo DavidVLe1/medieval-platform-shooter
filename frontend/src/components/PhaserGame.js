@@ -735,10 +735,6 @@ const PhaserGame = ({enemies,userData }) => {
             // return response.json();
           }
         })
-        .then((updatedLeaderboard) => {
-          // Do something with the updated leaderboard data.
-          console.log(updatedLeaderboard);
-        })
         .catch((error) => {
           console.error('An error occurred:', error);
         });

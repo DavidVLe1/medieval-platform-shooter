@@ -1,8 +1,10 @@
 import React from "react"
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-export default function Login({handleAuthentication, isAuthenticated, handleUserId, handleUserData}){
+import { useContext } from "react";
+import AuthContext from "./context/AuthContext";
+export default function Login(){
+    const {isAuthenticated,handleAuthentication,handleUserId,handleUserData}=useContext(AuthContext)
     const [signInFormData, setSignInFormData] = useState({
         email: "",
         password: ""

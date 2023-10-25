@@ -1,6 +1,8 @@
 import { NavLink } from "react-router-dom";
-
-export default function Nav({ isAuthenticated }) {
+import AuthContext from "./context/AuthContext";
+import { useContext } from "react";
+export default function Nav() {
+    const {isAuthenticated}=useContext(AuthContext);
     return (
         <div className="container-fluid" >
             <nav className="navbar navbar-expand-lg navbar-light bg-light">

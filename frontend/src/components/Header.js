@@ -1,9 +1,9 @@
 import Nav from "./Nav";
 
-export default function Header({isAuthenticated}){
+export default function Header(){
     return(
         <header>
-            <Nav isAuthenticated={isAuthenticated}/>
+            <Nav />
         </header>
     );
 }
