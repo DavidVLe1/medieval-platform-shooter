@@ -155,7 +155,7 @@ begin
         (1, 2, true, true),
         (2, 1, false, true);
     -- Sample World stats Data
-    insert into world_stats (player_character_id, enemies_killed, items_used, times_died)
+    insert into world_stats (player_character_id, enemies_killed, item_used, times_died)
     values
         (1, 50, 10, 5),
         (2, 100, 25, 8);

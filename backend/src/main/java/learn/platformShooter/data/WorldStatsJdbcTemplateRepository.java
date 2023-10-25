@@ -42,7 +42,7 @@ public class WorldStatsJdbcTemplateRepository implements WorldStatsRepository{
 
     @Override
     public WorldStats add(WorldStats worldStats) {
-        final String sql = "insert into world_stats (player_character_id, enemies_killed, items_used, times_died ) "
+        final String sql = "insert into world_stats (player_character_id, enemies_killed, item_used, times_died ) "
                 +"values (?,?,?,?);";
         KeyHolder keyHolder = new GeneratedKeyHolder ();
         int rowsAffected = jdbcTemplate.update (connection -> {

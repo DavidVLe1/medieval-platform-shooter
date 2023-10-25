@@ -6,11 +6,11 @@ export default function SignUp({ handleAuthentication, handleUserId, isUserId })
         userId: 0,
         firstName: "",
         lastName: "",
-        username:"",
+        username: "",
         email: "",
         password: "",
-        favoriteColor:"",
-        gender:""
+        favoriteColor: "",
+        gender: ""
     });
     const navigate = useNavigate();
     const handleChange = (event) => {
@@ -43,6 +43,111 @@ export default function SignUp({ handleAuthentication, handleUserId, isUserId })
                 handleAuthentication(true);
                 handleUserId(userId);
                 // console.log("isUserId: "+isUserId); 1 means not guest
+
+
+                const playerCharacterData = {//default generated.
+                    playerChracterId: 0,
+                    userId: userId,
+                    timePlayedInSeconds: 0,
+                    charactersLevel: 1,
+                    maxHealth: 100,
+                    health: 100,
+                    damage: 10,
+                    speed: 8,
+                    healingPotions: 5,
+                };
+
+                try {
+                    // Second fetch request for creating a player character
+                    const playerResponse = await fetch("http://localhost:8080/api/playerCharacter", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(playerCharacterData),
+                    });
+
+                    if (playerResponse.ok) {
+                        console.log("Player Generated Successful");
+
+
+
+
+                        // Extract the new player character id from the response
+                        const playerCharacterResponseData = await playerResponse.json();
+                        console.log("playerCharacterResponseData is: "+playerCharacterResponseData.playerCharacterId);
+                        const newPlayerCharacterId = playerCharacterResponseData.playerCharacterId;
+
+
+                        // If creating the player character is successful, create game events
+                        const gameEventsData = {
+                            // other game events data
+                            gameEventsId: 0,
+                            playerCharacterId: newPlayerCharacterId,
+                            bossesKilled: 0,
+                            legendaryItemObtained: false,
+                            gameCompleted: false,
+                        };
+                        // fourth fetch request for creating gameEvents
+                        try {
+                            const gameEventsResponse = await fetch("http://localhost:8080/api/gameEvents", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                },
+                                body: JSON.stringify(gameEventsData),
+                            });
+
+                            if (gameEventsResponse.ok) {
+                                console.log("Game Events Created Successfully");
+                            } else {
+                                const gameEventsErrorData = await gameEventsResponse.json();
+                                console.error("Game Events Creation failed:", gameEventsErrorData);
+                            }
+                        } catch (gameEventsError) {
+                            console.error("An error occurred while creating game events:", gameEventsError);
+                        }
+
+
+                        // Create world stats in a similar way
+                        const worldStatsData = {
+                            // other world stats data
+                            worldStatsId: 0,
+                            playerCharacterId: newPlayerCharacterId,
+                            enemiesKilled:0,
+                            itemsUsed:0,
+                            timesDied:0,
+                        };
+                        // fourth fetch request for creating worldStats
+                        try {
+                            const worldStatsResponse = await fetch("http://localhost:8080/api/worldStats", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                },
+                                body: JSON.stringify(worldStatsData),
+                            });
+
+                            if (worldStatsResponse.ok) {
+                                console.log("World Stats Created Successfully");
+                            } else {
+                                const worldStatsErrorData = await worldStatsResponse.json();
+                                console.error("World Stats Creation failed:", worldStatsErrorData);
+                            }
+                        } catch (worldStatsError) {
+                            console.error("An error occurred while creating world stats:", worldStatsError);
+                        }
+
+
+
+                    } else {
+                        const playerErrorData = await playerResponse.json();
+                        console.error("Player Generated failed:", playerErrorData);
+                    }
+                } catch (playerError) {
+                    console.error("An error occurred while creating a player character:", playerError);
+                }
+
                 console.log("Registration Successful");
                 setSignUpFormData({ ...signUpFormData, userId });
                 navigate("/")
