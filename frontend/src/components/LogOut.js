@@ -1,12 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function Logout({ handleAuthentication,  handleLeaderboardScores }) {
+export default function Logout({ handleAuthentication }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
     handleAuthentication(false);
-    handleLeaderboardScores([]);
     navigate("/");
   };
 

@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import Phaser from 'phaser';
 
-const PhaserGame = () => {
-
+const PhaserGame = ({enemies}) => {
   useEffect(() => {
     const config = {
       type: Phaser.AUTO,
@@ -41,22 +40,27 @@ const PhaserGame = () => {
     var playerDamage = 10;
     var maxHealth = 100;
     var healthPoints = maxHealth;
-    var enemy1;
+    var enemy1; //for adding as sprite
+    var enemy1Obj=enemies[0];//for holding data
+    // enemies.forEach((enemy, index) => { //tests whats inside the enemies prop.
+    //   console.log(`Enemy ${index + 1}:`, enemy);
+    // });
     let enemy1Direction = 'right'; // To keep track of enemy's movement direction
     let enemy1Jumping = false; // To keep track of enemy's jump state
-    var enemy1Damage = 5;
-    var enemy1Health = 30;
-    var enemy1Speed = 4;
+    var enemy1Damage = enemy1Obj.damage;
+    var enemy1Health = enemy1Obj.health;
+    var enemy1Speed = enemy1Obj.speed;
     var enemy1Killed;
+    var bossObj=enemies[1];
     var bossKilled=false;
     var winMessage;
     var loseMessage;
     var greyOverlay;
     // var enemy2;
     var boss;
-    var bossHealth = 100;
-    var bossDamage = 30;
-    var bossDashSpeed = 8;
+    var bossHealth = bossObj.health;
+    var bossDamage = bossObj.damage;
+    var bossDashSpeed = bossObj.speed;
     // Define a variable to track whether the boss has dashed
     let hasDashed = false;
     // Add a variable to keep track of invincibility state

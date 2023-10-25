@@ -16,6 +16,7 @@ export default function Home() {
         <li>Defeat the boss to win!</li>
       </ul>
       <p>Have fun and good luck!</p>
+      <p>To start your adventure, please <a href="/login">log in</a> or <a href="/signup">sign up</a>.</p>
     </div>
   );
 }
