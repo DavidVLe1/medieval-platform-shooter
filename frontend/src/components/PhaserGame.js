@@ -47,7 +47,7 @@ const PhaserGame = () => {
     var enemy1Damage = 5;
     var enemy1Health = 30;
     var enemy1Speed = 4;
-    var enemy1Killed = false;
+    var enemy1Killed;
     var bossKilled=false;
     var winMessage;
     var loseMessage;
@@ -345,7 +345,7 @@ const PhaserGame = () => {
       this.physics.world.overlap(playerBullets, enemy1, enemyHitCallback, null, this); //handle enemy hit by bullet
       this.physics.world.overlap(playerBullets, boss, enemyHitCallback, null, this); //handle boss hit by bullet
 
-      if(enemy1Killed&& !boss && stage===2 && stars.countActive(true) === 0){
+      if(enemy1Killed===true && !boss && stage===3 && stars.countActive(true) === 0){
         createBoss.call(this);
       }
       //---------------------------check if player is invincible-----------------------
@@ -443,7 +443,7 @@ const PhaserGame = () => {
       }
       //---------------------------------------------------BOSS LOGIC!--------------------------------------------------------
       // Detect player's position
-      if (stage === 2 && enemy1Killed) {
+      if (stage === 3 && enemy1Killed===true) {
         // Check if the boss object exists
         if (boss) {
           const playerX = player.x;
@@ -520,8 +520,8 @@ const PhaserGame = () => {
       score += 10;
       scoreText.setText('Score: ' + score);
     
-      if(stage<1){
-        if (stars.countActive(true) === 0 && stage < 2) {
+      if(stage<3){
+        if (stars.countActive(true) === 0 ) {
           // A new batch of stars to collect
           stars.children.iterate(function (child) {
             child.enableBody(true, child.x, 0, true, true);
@@ -532,6 +532,7 @@ const PhaserGame = () => {
           bomb.setBounce(1);
           bomb.setCollideWorldBounds(true);
           bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+          stage += 1;
         }
       }
 
@@ -680,7 +681,7 @@ const PhaserGame = () => {
           if (enemy1Health <= 0) {
             if(!enemy1Killed){
               score += 500; // Add points for defeating an enemy
-              stage += 1;
+
             }
             enemy1Killed = true;
             targetHit.destroy(); // Destroy the enemy

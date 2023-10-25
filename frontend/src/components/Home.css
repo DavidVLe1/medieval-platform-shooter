@@ -1,0 +1,9 @@
+/* Home.css */
+.home-container {
+    text-align: center; /* Center align text horizontally */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center align content vertically */
+    justify-content: center; /* Center align content horizontally */
+    height: 100vh; /* Make the container take up the full viewport height */
+  }

@@ -29,10 +29,7 @@ function App() {
     <>
       <Router>
         <Header isAuthenticated={isAuthenticated} />
-        <div>
-          <h1>Starlight Quest: Knight's Challenge</h1>
-          <br></br>
-        </div>
+
         <Routes>
           <Route path="/" element={<Home/>}></Route>
           <Route path="/game" element={<PhaserGame leaderboardScores={leaderboardScores} handleLeaderboardScores={handleLeaderboardScores}/>}></Route>
