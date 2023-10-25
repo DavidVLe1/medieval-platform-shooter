@@ -363,6 +363,7 @@ const PhaserGame = () => {
         return;
       }
       //arrow key controls.-------------------------------------------------------------------------------
+      if(!gameOver){
       if (cursors.left.isDown) {
         player.setVelocityX(-playerSpeed * 32);
         // Flip the character horizontally when moving left
@@ -399,7 +400,7 @@ const PhaserGame = () => {
       if (cursors.up.isDown && player.body.touching.down) {
         player.setVelocityY(-330);
       }
-
+    }
       // Update the position of the score and time text relative to the camera-------------------------------
       scoreText.x = this.cameras.main.scrollX + 16;
       scoreText.y = this.cameras.main.scrollY + 16;
@@ -416,6 +417,7 @@ const PhaserGame = () => {
 
 
       // ---Enemy movement logic----------------------------------------------------
+      
       if (enemy1Direction === 'right' && enemy1Health > 0) {
         enemy1.setVelocityX(enemy1Speed * 25);
         enemy1.anims.play('right', true);
@@ -448,6 +450,7 @@ const PhaserGame = () => {
           const bossX = boss.x;
 
           // Define the boss's movement logic here
+          if(!gameOver){
           if (bossHealth > 0) {
             if (!hasDashed) {
               if (player.x < boss.x) {
@@ -489,6 +492,7 @@ const PhaserGame = () => {
               });
             }
           }
+        }
         }
       }
     }
@@ -735,6 +739,14 @@ const PhaserGame = () => {
         }
       }
     }
+    return () => {
+      // Clean up the Phaser game instance when the component unmounts
+      if (game) {
+        sfx.stop();
+        clearInterval(timer); // Stop the timer when the game is over
+        game.destroy(true, false);
+      }
+    };
   }, []);
 
   return (

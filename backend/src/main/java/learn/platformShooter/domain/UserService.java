@@ -1,6 +1,7 @@
 package learn.platformShooter.domain;
 
 import learn.platformShooter.data.UserRepository;
+import learn.platformShooter.models.Auth;
 import learn.platformShooter.models.User;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,18 @@ public class UserService {
         result.setPayload(user);
         return result;
     }
+
+    public Result<User> findByAuth(Auth userToAuth) {
+        Result<User> result = validateAuth(userToAuth);
+        User user = repository.findByAuth(userToAuth);
+        if (user == null ) {
+            result.addMessage("user not found", ResultType.INVALID);
+        } else {
+            result.setPayload(user);
+        }
+        return result;
+    }
+
     public Result<User> update(User user){
         Result<User> result = validate (user);
 
@@ -87,6 +100,26 @@ public class UserService {
         if (Validations.isNullOrBlank(user.getGender ())) {
             result.addMessage("user gender is required.", ResultType.INVALID);
         }
+
+        return result;
+    }
+
+    private Result<User> validateAuth(Auth userToAuth) {
+        Result<User> result = new Result<>();
+        if (userToAuth == null) {
+            result.addMessage("user cannot be null", ResultType.INVALID);
+            return result;
+        }
+
+
+        if (Validations.isNullOrBlank(userToAuth.getEmail())) {
+            result.addMessage("Email is required", ResultType.INVALID);
+        }
+
+        if (Validations.isNullOrBlank(userToAuth.getPassword())) {
+            result.addMessage("Password is required", ResultType.INVALID);
+        }
+
 
         return result;
     }

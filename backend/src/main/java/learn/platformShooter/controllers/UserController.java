@@ -2,6 +2,7 @@ package learn.platformShooter.controllers;
 
 import learn.platformShooter.domain.Result;
 import learn.platformShooter.domain.UserService;
+import learn.platformShooter.models.Auth;
 import learn.platformShooter.models.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,14 @@ public class UserController {
             return new ResponseEntity<> (HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok (user);
+    }
+    @PostMapping("/{authenticate}")
+    public ResponseEntity<Object> authenticate(@RequestBody Auth userToAuth) {
+        Result<User> result = userService.findByAuth(userToAuth);
+        if (result.isSuccess()) {
+            return new ResponseEntity<>(result.getPayload(), HttpStatus.ACCEPTED);
+        }
+        return ErrorResponse.build(result);
     }
     //implement create
     @PostMapping

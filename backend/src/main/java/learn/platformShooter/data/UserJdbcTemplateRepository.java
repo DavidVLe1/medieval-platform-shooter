@@ -1,6 +1,7 @@
 package learn.platformShooter.data;
 
 import learn.platformShooter.data.mappers.UserMapper;
+import learn.platformShooter.models.Auth;
 import learn.platformShooter.models.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -41,7 +42,18 @@ public class UserJdbcTemplateRepository implements UserRepository {
                 +"where email = ?;";
         return jdbcTemplate.query (sql, new UserMapper(), email).stream ().findFirst ().orElse (null);
     }
+    @Override
+    @Transactional
+    public User findByAuth(Auth userToAuth) {
 
+        final String sql = "select user_id, first_name, last_name, username,email, password, favorite_color, gender  "
+                + "from user "
+                + "where email = ? and password = ?;";
+
+        return jdbcTemplate.query(sql, new UserMapper(), userToAuth.getEmail(), userToAuth.getPassword()).stream()
+                .findFirst().orElse(null);
+
+    }
     @Override
     public User add(User user) {
         final String sql = "insert into user (first_name, last_name, username, email, password, favorite_color, gender) "
