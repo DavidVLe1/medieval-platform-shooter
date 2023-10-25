@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PhaserGame from './PhaserGame'; // Import your Phaser game component
 
-export default function GameContainer({userData}) {
+export default function GameContainer() {
     const [enemies, setEnemies] = useState([]);
     const navigate = useNavigate();
     useEffect(() => {
@@ -36,7 +36,7 @@ export default function GameContainer({userData}) {
     // console.log(platforms
     return (
         <>
-            {enemies.length > 0 ? <PhaserGame enemies={enemies} userData={userData}/> : <p>Loading...</p>}
+            {enemies.length > 0 ? <PhaserGame enemies={enemies} /> : <p>Loading...</p>}
         </>
     );
 

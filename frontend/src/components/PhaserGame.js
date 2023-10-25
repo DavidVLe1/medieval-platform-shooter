@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import Phaser from 'phaser';
+import AuthContext from './context/AuthContext';
 
-const PhaserGame = ({enemies,userData }) => {
+const PhaserGame = ({enemies}) => {
+  const {userData} = useContext(AuthContext);
   console.log(" userData: "+userData.username + ","+userData.userId);
   useEffect(() => {
     const config = {

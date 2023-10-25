@@ -43,11 +43,18 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Home />}></Route>
-          <Route path="/game" element={<GameContainer userData={userData} />}></Route>
-          <Route path="/login" element={<Login />}></Route>
-          <Route path="/logout" element={<LogOut />}></Route>
-          <Route path="/signup" element={<SignUp  />}></Route>
-          <Route path="/scoreboard" element={<ScoreBoard />}></Route>
+          {authValues.isAuthenticated ? (
+        <>
+          <Route path="/game" element={<GameContainer  />} />
+          <Route path="/logout" element={<LogOut />} />
+          <Route path="/scoreboard" element={<ScoreBoard />} />
+        </>
+      ) : (
+        <>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+        </>
+      )}
           <Route path='/*' element={<ErrorPage />}></Route>
         </Routes>
       </Router>
