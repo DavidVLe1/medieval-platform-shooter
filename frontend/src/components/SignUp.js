@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function SignUp({ handleAuthentication, handleUserId, isUserId }) {
+export default function SignUp({ handleAuthentication, handleUserId, isUserId,handleUserData }) {
     const [signUpFormData, setSignUpFormData] = useState({
         userId: 0,
         firstName: "",
@@ -38,10 +38,11 @@ export default function SignUp({ handleAuthentication, handleUserId, isUserId })
 
             if (response.ok) {
                 const responseData = await response.json();
-                console.log(responseData);
+                console.log("responseData : "+responseData);
                 const { userId } = responseData; // Extract userId from the response
                 handleAuthentication(true);
                 handleUserId(userId);
+                handleUserData(responseData);
                 // console.log("isUserId: "+isUserId); 1 means not guest
 
 

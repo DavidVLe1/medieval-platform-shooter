@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import Phaser from 'phaser';
 
-const PhaserGame = ({enemies}) => {
+const PhaserGame = ({enemies,userData }) => {
+  console.log(" userData: "+userData.username + ","+userData.userId);
   useEffect(() => {
     const config = {
       type: Phaser.AUTO,
@@ -72,7 +73,7 @@ const PhaserGame = ({enemies}) => {
     };
     const purpleTint = 0x800080;
 
-
+    var scorePosted=false;
 
     var game = new Phaser.Game(config);
 
@@ -364,6 +365,11 @@ const PhaserGame = ({enemies}) => {
         sfx.stop();
         this.physics.pause();
         clearInterval(timer); // Stop the timer when the game is over
+        if(!scorePosted){
+          postNewScore();
+          scorePosted=true;
+        }
+
         return;
       }
       //arrow key controls.-------------------------------------------------------------------------------
@@ -701,6 +707,45 @@ const PhaserGame = ({enemies}) => {
         bulletHit.destroy();
       }
     }
+
+
+    function postNewScore() {
+      const requestData = {
+        userId:userData.userId,
+        username:userData.username,
+        score: score,
+      };
+    
+      fetch('http://localhost:8080/api/leaderboard', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+      })
+        .then((response) => {
+          if (response.ok) {
+            // The leaderboard has been updated successfully.
+            // You can handle this as needed (e.g., showing a success message).
+            console.log('Leaderboard updated successfully');
+            // return response.json();
+          } else {
+            // Handle any errors here.
+            console.error('Failed to update leaderboard');
+            // return response.json();
+          }
+        })
+        .then((updatedLeaderboard) => {
+          // Do something with the updated leaderboard data.
+          console.log(updatedLeaderboard);
+        })
+        .catch((error) => {
+          console.error('An error occurred:', error);
+        });
+    }
+
+
+
 
     class Bullet extends Phaser.GameObjects.Image {
       constructor(scene, config) {

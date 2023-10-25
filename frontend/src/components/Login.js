@@ -2,7 +2,7 @@ import React from "react"
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function Login({handleAuthentication, isAuthenticated, handleUserId}){
+export default function Login({handleAuthentication, isAuthenticated, handleUserId, handleUserData}){
     const [signInFormData, setSignInFormData] = useState({
         email: "",
         password: ""
@@ -32,6 +32,8 @@ export default function Login({handleAuthentication, isAuthenticated, handleUser
             const responseData = await response.json();
             console.log("Sign-in Successful", responseData);
             const { userId } = responseData;
+            console.log("Login response data: "+ responseData);
+            handleUserData(responseData);
             handleAuthentication(true);
             handleUserId(userId);
             //now i need to do something with the userId...

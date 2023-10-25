@@ -10,18 +10,20 @@ import Home from "./components/Home";
 import GameContainer from "./components/GameContainer";
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated]=useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const handleAuthentication = (status) => {
     setIsAuthenticated(status);
     // console.log('isAuthenticated updated:', status);
   };
-  const[isUserId, setisUserId]= useState(0);
+  const [isUserId, setisUserId] = useState(0);
   console.log(isUserId);
-  const handleUserId=(userId)=>{
+  const handleUserId = (userId) => {
     setisUserId(userId);
   }
-
-
+  const [userData, setUserData] = useState({});
+  const handleUserData = (userData) => {
+    setUserData(userData);
+  }
 
   return (
     <>
@@ -29,13 +31,13 @@ function App() {
         <Header isAuthenticated={isAuthenticated} />
 
         <Routes>
-          <Route path="/" element={<Home/>}></Route>
-          <Route path="/game" element={<GameContainer  />}></Route>
-          <Route path="/login" element={<Login handleAuthentication={handleAuthentication} isAuthenticated={isAuthenticated} handleUserId={handleUserId} isUserId={isUserId} />}></Route>
-          <Route path="/logout" element={<LogOut handleAuthentication={handleAuthentication} />}></Route>
-          <Route path="/signup" element={<SignUp handleAuthentication={handleAuthentication} isAuthenticated={isAuthenticated} handleUserId={handleUserId} isUserId={isUserId}/>}></Route>
+          <Route path="/" element={<Home />}></Route>
+          <Route path="/game" element={<GameContainer userData={userData} />}></Route>
+          <Route path="/login" element={<Login handleUserData={handleUserData} handleAuthentication={handleAuthentication} isAuthenticated={isAuthenticated} handleUserId={handleUserId} isUserId={isUserId} />}></Route>
+          <Route path="/logout" element={<LogOut handleUserData={handleUserData} handleAuthentication={handleAuthentication} />}></Route>
+          <Route path="/signup" element={<SignUp handleUserData={handleUserData} handleAuthentication={handleAuthentication} isAuthenticated={isAuthenticated} handleUserId={handleUserId} isUserId={isUserId} />}></Route>
           <Route path="/scoreboard" element={<ScoreBoard handleAuthentication={handleAuthentication} isAuthenticated={isAuthenticated} handleUserId={handleUserId} isUserId={isUserId} />}></Route>
-          <Route path='/*' element={<ErrorPage/>}></Route>
+          <Route path='/*' element={<ErrorPage />}></Route>
         </Routes>
       </Router>
     </>
