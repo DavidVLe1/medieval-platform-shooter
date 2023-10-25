@@ -1,12 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import './ErrorPage.css';
 
 export default function ErrorPage() {
   return (
-    <div className="error-page-background">
+    <div className="errorPage-container">
       <div className="error-content">
+      <h1>Error!</h1>
         <Link to="/" className="go-back-button">
-        <h1>Error!</h1>
           Go Back Home
         </Link>
       </div>
