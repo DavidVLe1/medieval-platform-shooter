@@ -6,6 +6,8 @@ import learn.platformShooter.models.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class UserService {
@@ -95,6 +97,15 @@ public class UserService {
         }
         if (Validations.isNullOrBlank(user.getEmail ())) {
             result.addMessage("user email is required.", ResultType.INVALID);
+        } else{
+            // Use your validateEmail method to validate the email
+            Result<User> emailValidationResult = validateEmail(user.getEmail());
+            if (emailValidationResult.getType() == ResultType.INVALID) {
+                // Email is invalid, add its messages to the main result
+                for (String message : emailValidationResult.getMessages()) {
+                    result.addMessage(message, ResultType.INVALID);
+                }
+            }
         }
         if (Validations.isNullOrBlank(user.getPassword ())) {
             result.addMessage("user password is required.", ResultType.INVALID);
@@ -115,8 +126,6 @@ public class UserService {
             result.addMessage("user cannot be null", ResultType.INVALID);
             return result;
         }
-
-
         if (Validations.isNullOrBlank(userToAuth.getEmail())) {
             result.addMessage("Email is required", ResultType.INVALID);
         }
@@ -124,7 +133,18 @@ public class UserService {
         if (Validations.isNullOrBlank(userToAuth.getPassword())) {
             result.addMessage("Password is required", ResultType.INVALID);
         }
+        return result;
+    }
+    private Result<User> validateEmail(String email){
+        Result<User> result = new Result<>();
+        // Define a regular expression pattern for a valid email
+        String emailPattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}$";
+        Pattern pattern = Pattern.compile(emailPattern);
+        Matcher matcher = pattern.matcher(email);
 
+        if (!matcher.matches()) {
+            result.addMessage("Invalid email format", ResultType.INVALID);
+        }
 
         return result;
     }
