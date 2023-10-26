@@ -5,7 +5,7 @@ import AuthContext from './context/AuthContext';
 export default function Home() {
     const { isAuthenticated, userData } = useContext(AuthContext);
     return (
-        <div className="home-container text-pink">
+        <div className="home-container text-large">
             <h1>Welcome to Starlight Quest: Knight's Challenge</h1>
             {isAuthenticated ? (
                 <>

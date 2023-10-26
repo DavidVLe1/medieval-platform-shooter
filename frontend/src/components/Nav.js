@@ -1,12 +1,17 @@
 import { NavLink } from "react-router-dom";
 import AuthContext from "./context/AuthContext";
 import { useContext } from "react";
+import "./Nav.css";
 export default function Nav() {
     const {isAuthenticated}=useContext(AuthContext);
+
+
+
     return (
-        <div className="container-fluid" >
-            <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                <NavLink className="navbar-brand vt323-font" to="/">
+        
+        <div className="container-fluid navbar-custom" >
+            <nav className="navbar navbar-expand-lg "  >
+                <NavLink className="navbar-brand vt323-font custom-link"  to="/" activeClassName="active">
                     Starlight Quest: Knight's Challenge
                 </NavLink>
                 <button

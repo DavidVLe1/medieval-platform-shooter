@@ -7,9 +7,10 @@
     justify-content: center;
     height: 100vh;
     background-image: url('/public/assets/homePicture.jpg');
-    background-size: cover; 
+    background-size: cover;
 }
-.text-pink {
-    font-size: 1.3em; 
+
+.text-large {
+    font-size: 1.3em;
     font-weight: bold;
-  }
+}
