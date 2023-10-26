@@ -97,7 +97,7 @@ export default function Login() {
 
   return (
 
-    <div className="sign-in-page-background">
+    <div className="sign-in-page-background" >
       <div style={containerStyle}>
         {isAuthenticated ? (
           <p>You are logged in. [Log Out]</p>
