@@ -33,6 +33,7 @@ const PhaserGame = ({enemies}) => {
     var bombs;
     var gameOver = false;
     var timer;
+    let bossIdleTimer;
     var playerBullets;
     let isFacingLeft = false;
     let sfx;
@@ -44,6 +45,7 @@ const PhaserGame = ({enemies}) => {
     var maxHealth = 100;
     var healthPoints = maxHealth;
     var enemy1; //for adding as sprite
+    var bossActive=false;
     var enemy1Obj=enemies[0];//for holding data
     // enemies.forEach((enemy, index) => { //tests whats inside the enemies prop.
     //   console.log(`Enemy ${index + 1}:`, enemy);
@@ -81,8 +83,12 @@ const PhaserGame = ({enemies}) => {
 
     function preload() {
       this.load.audio('theme', 'assets/music/theme.mp3');
+      this.load.audio('pickUpStar','assets/music/pickUp.mp3')
       this.load.audio('hurt', 'assets/music/hurt.mp3');
       this.load.audio('evilLaugh', 'assets/music/gameOver.mp3');
+      this.load.audio('swordWhoosh','/assets/music/swordWhoosh.mp3');
+      this.load.audio('wonGame','/assets/music/winGame.mp3');
+      this.load.audio('spellHit','/assets/music/swordSpell.mp3');
       this.load.image('sky', 'assets/sky.png');
       this.load.image('ground', 'assets/platform.png');
       this.load.image('background', 'assets/Background.png')
@@ -255,6 +261,8 @@ const PhaserGame = ({enemies}) => {
           // Play the attack animation and listen for animation complete
           player.anims.play('spell', true);
           player.on('animationcomplete', () => {
+            const swordWhooshSound = this.sound.add('swordWhoosh');
+            swordWhooshSound.play();
             // The animation has completed; fire the bullet
             shootBullet(player, player.flipX);
 
@@ -353,6 +361,7 @@ const PhaserGame = ({enemies}) => {
       this.physics.world.overlap(playerBullets, boss, enemyHitCallback, null, this); //handle boss hit by bullet
 
       if(enemy1Killed===true && !boss && stage===3 && stars.countActive(true) === 0){
+        bossActive=true;
         createBoss.call(this);
       }
       //---------------------------check if player is invincible-----------------------
@@ -429,7 +438,9 @@ const PhaserGame = ({enemies}) => {
 
 
       // ---Enemy movement logic----------------------------------------------------
-      
+      if(enemy1 ){
+
+ 
       if (enemy1Direction === 'right' && enemy1Health > 0) {
         enemy1.setVelocityX(enemy1Speed * 25);
         enemy1.anims.play('right', true);
@@ -453,17 +464,18 @@ const PhaserGame = ({enemies}) => {
       } else if (enemy1.x >= 600) {
         enemy1Direction = 'left';
       }
+    }
       //---------------------------------------------------BOSS LOGIC!--------------------------------------------------------
       // Detect player's position
       if (stage === 3 && enemy1Killed===true) {
         // Check if the boss object exists
-        if (boss) {
+        if (bossActive ) {
           const playerX = player.x;
           const bossX = boss.x;
 
           // Define the boss's movement logic here
-          if(!gameOver){
-          if (bossHealth > 0) {
+          if(!gameOver ){
+          if (bossActive && bossHealth > 0) {
             if (!hasDashed) {
               if (player.x < boss.x) {
                 // Player is to the left of the boss, so make the boss dash left
@@ -483,25 +495,46 @@ const PhaserGame = ({enemies}) => {
                 boss.setVelocityY(0);
               }
               hasDashed = true;
-
-              // Start a timer to reset the boss's velocity and play idle animation
-              this.time.addEvent({
-                delay: 1000,
-                callback: () => {
-                  boss.setVelocityX(0);
-                  boss.anims.play('idleBoss', true);
-
-                  // Create a timer to allow the boss to dash again after a certain interval
-                  this.time.addEvent({
-                    delay: 3000,
+              if (boss && bossActive) {
+                // Start a timer to reset the boss's velocity and play idle animation
+                bossIdleTimer = this.time.addEvent({
+                    delay: 1000,
                     callback: () => {
-                      hasDashed = false;
+                        // Check if the boss is still in the game
+                        if (boss && boss.active) {
+                            boss.setVelocityX(0);
+                            boss.anims.play('idleBoss', true);
+                        }
+        
+                        // Create a timer to allow the boss to dash again after a certain interval
+                        bossIdleTimer = this.time.addEvent({
+                            delay: 3000,
+                            callback: () => {
+                                hasDashed = false;
+                            },
+                            callbackScope: this,
+                        });
                     },
                     callbackScope: this,
-                  });
-                },
-                callbackScope: this,
-              });
+                });}
+              // // Start a timer to reset the boss's velocity and play idle animation
+              // this.time.addEvent({
+              //   delay: 1000,
+              //   callback: () => {
+              //     boss.setVelocityX(0);
+              //     boss.anims.play('idleBoss', true);
+
+              //     // Create a timer to allow the boss to dash again after a certain interval
+              //     this.time.addEvent({
+              //       delay: 3000,
+              //       callback: () => {
+              //         hasDashed = false;
+              //       },
+              //       callbackScope: this,
+              //     });
+              //   },
+              //   callbackScope: this,
+              // });
             }
           }
         }
@@ -527,6 +560,8 @@ const PhaserGame = ({enemies}) => {
       // so that it only appears after collecting the stars.
     }
     function collectStar(player, star) {
+      const pickUpStarSound = this.sound.add('pickUpStar');
+      pickUpStarSound.play();
       star.disableBody(true, true);
       // Add and update the score
       score += 10;
@@ -679,12 +714,16 @@ const PhaserGame = ({enemies}) => {
               score += 1500; // Add points for defeating the boss
             }
             bossKilled=true;
+            // const gameWonSound = this.sound.add('wonGame');
+            // gameWonSound.play();
             boss.destroy(); // Destroy the boss
-
+            bossActive=false;
+            boss.setActive(false).setVisible(false);
             // Show the win message and grey overlay
             winMessage.setVisible(true);
             greyOverlay.setVisible(true);
             gameOver = true;
+
           }
         } else {
           // Handle enemy hit
@@ -697,7 +736,6 @@ const PhaserGame = ({enemies}) => {
             }
             enemy1Killed = true;
             targetHit.destroy(); // Destroy the enemy
-
 
           }
         }
@@ -801,6 +839,7 @@ const PhaserGame = ({enemies}) => {
     <div id="phaser-container">
       {/* Phaser game will be rendered here */}
     </div>
+    
   );
 };
 
