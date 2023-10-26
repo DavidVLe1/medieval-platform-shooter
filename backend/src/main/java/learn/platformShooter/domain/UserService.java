@@ -25,6 +25,11 @@ public class UserService {
         }
         if (repository.findByEmail(user.getEmail()) != null) {
             result.addMessage("user email is already in the system.", ResultType.INVALID);
+            return result;
+        }
+        if(repository.findByUsername (user.getUsername ())!=null){
+            result.addMessage("username is already taken.", ResultType.INVALID);
+            return result;
         }
         if (user.getUserId () != 0) {
             result.addMessage("userId cannot be set for `add` operation.", ResultType.INVALID);

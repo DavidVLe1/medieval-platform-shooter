@@ -10,6 +10,9 @@ public interface UserRepository {
     List<User> findAll();
     User findById(int userId);
     User findByAuth(Auth userToAuth);
+
+    User findByUsername(String username);
+
     User findByEmail(String email);
 
     User add(User user);

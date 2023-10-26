@@ -34,6 +34,13 @@ public class UserJdbcTemplateRepository implements UserRepository {
                 +"where user_id = ?;";
         return jdbcTemplate.query (sql, new UserMapper(), userId).stream ().findFirst ().orElse (null);
     }
+    @Override
+    public User findByUsername(String username) {
+        final String sql = "select user_id, first_name, last_name, username, email, password, favorite_color, gender "
+                +"from `user` "
+                +"where username = ?;";
+        return jdbcTemplate.query (sql, new UserMapper(), username).stream ().findFirst ().orElse (null);
+    }
 
     @Override
     public User findByEmail(String email){

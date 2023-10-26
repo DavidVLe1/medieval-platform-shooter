@@ -14,6 +14,7 @@ export default function SignUp() {
         favoriteColor: "",
         gender: ""
     });
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -157,6 +158,7 @@ export default function SignUp() {
             } else {
                 const errorData = await response.json();
                 console.error("Registration failed:", errorData);
+                setError("Sign-Up failed due to: "+errorData);
             }
         } catch (error) {
             console.error("An error occurred:", error);
@@ -207,6 +209,11 @@ export default function SignUp() {
         <div className="sign-up-page-background">
             <div style={containerStyle}>
                 <h2 style={{ textAlign: "center", fontFamily: "'Press Start 2P', sans-serif" }}>Sign Up</h2>
+                {error && (
+              <div className="alert alert-danger" role="alert">
+                {error}
+              </div>
+            )}
                 <form onSubmit={handleSubmit}>
                     <div className="row">
                         <div className="col-md-6 mb-3" style={{ marginBottom: "15px" }}>

@@ -43,12 +43,12 @@ class WorldStatsJdbcTemplateRepositoryTest {
 
     @Test
     void add() {
-        WorldStats actual = new WorldStats (0,2,0,0,5);
+        WorldStats actual = new WorldStats (0,2,0,0,0);
         assertNotNull (repository.add (actual));
         assertEquals (3,actual.getWorldStatsId ());
         assertEquals (0,actual.getEnemiesKilled ());
         assertEquals (0,actual.getItemsUsed ());
-        assertEquals (5,actual.getTimesDied ());
+        assertEquals (0,actual.getTimesDied ());
     }
 
     @Test

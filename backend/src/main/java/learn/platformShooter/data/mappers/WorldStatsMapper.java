@@ -13,7 +13,7 @@ public class WorldStatsMapper implements RowMapper<WorldStats> {
         worldStats.setWorldStatsId (resultSet.getInt ("world_stats_id"));
         worldStats.setPlayerCharacterId (resultSet.getInt ("player_character_id"));
         worldStats.setEnemiesKilled (resultSet.getInt ("enemies_killed"));
-        worldStats.setItemsUsed (resultSet.getInt ("items_used"));
+        worldStats.setItemsUsed (resultSet.getInt ("item_used"));
         worldStats.setTimesDied (resultSet.getInt ("times_died"));
         return worldStats;
     }

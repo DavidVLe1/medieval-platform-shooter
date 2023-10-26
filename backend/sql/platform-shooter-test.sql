@@ -50,7 +50,7 @@ create table world_stats(
     world_stats_id int primary key auto_increment,
     player_character_id int,
     enemies_killed int,
-    items_used int,
+    item_used int,
     times_died int,
     foreign key (player_character_id) references player_character(player_character_id)
 );
