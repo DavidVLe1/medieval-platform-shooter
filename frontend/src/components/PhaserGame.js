@@ -378,7 +378,7 @@ const PhaserGame = ({ enemies }) => {
         this.physics.pause();
         clearInterval(timer); // Stop the timer when the game is over
         // Play the game won sound if it hasn't been played yet
-        if (!gameWonSoundPlayed) {
+        if (!gameWonSoundPlayed && bossKilled) {
           const gameWonSound = this.sound.add('wonGame');
           gameWonSound.play();
           gameWonSoundPlayed=true;
