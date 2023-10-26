@@ -2,9 +2,9 @@ import React, { useContext, useEffect } from 'react';
 import Phaser from 'phaser';
 import AuthContext from './context/AuthContext';
 
-const PhaserGame = ({enemies}) => {
-  const {userData} = useContext(AuthContext);
-  console.log(" userData: "+userData.username + ","+userData.userId);
+const PhaserGame = ({ enemies }) => {
+  const { userData } = useContext(AuthContext);
+  console.log(" userData: " + userData.username + "," + userData.userId);
   useEffect(() => {
     const config = {
       type: Phaser.AUTO,
@@ -32,6 +32,7 @@ const PhaserGame = ({enemies}) => {
     var timeText;
     var bombs;
     var gameOver = false;
+    let gameWonSoundPlayed = false;
     var timer;
     let bossIdleTimer;
     var playerBullets;
@@ -45,8 +46,8 @@ const PhaserGame = ({enemies}) => {
     var maxHealth = 100;
     var healthPoints = maxHealth;
     var enemy1; //for adding as sprite
-    var bossActive=false;
-    var enemy1Obj=enemies[0];//for holding data
+    var bossActive = false;
+    var enemy1Obj = enemies[0];//for holding data
     // enemies.forEach((enemy, index) => { //tests whats inside the enemies prop.
     //   console.log(`Enemy ${index + 1}:`, enemy);
     // });
@@ -56,8 +57,8 @@ const PhaserGame = ({enemies}) => {
     var enemy1Health = enemy1Obj.health;
     var enemy1Speed = enemy1Obj.speed;
     var enemy1Killed;
-    var bossObj=enemies[1];
-    var bossKilled=false;
+    var bossObj = enemies[1];
+    var bossKilled = false;
     var winMessage;
     var loseMessage;
     var greyOverlay;
@@ -77,18 +78,18 @@ const PhaserGame = ({enemies}) => {
     };
     const purpleTint = 0x800080;
 
-    var scorePosted=false;
+    var scorePosted = false;
 
     var game = new Phaser.Game(config);
 
     function preload() {
       this.load.audio('theme', 'assets/music/theme.mp3');
-      this.load.audio('pickUpStar','assets/music/pickUp.mp3')
+      this.load.audio('pickUpStar', 'assets/music/pickUp.mp3')
       this.load.audio('hurt', 'assets/music/hurt.mp3');
       this.load.audio('evilLaugh', 'assets/music/gameOver.mp3');
-      this.load.audio('swordWhoosh','/assets/music/swordWhoosh.mp3');
-      this.load.audio('wonGame','/assets/music/winGame.mp3');
-      this.load.audio('spellHit','/assets/music/swordSpell.mp3');
+      this.load.audio('swordWhoosh', '/assets/music/swordWhoosh.mp3');
+      this.load.audio('wonGame', '/assets/music/winGame.mp3');
+      this.load.audio('spellHit', '/assets/music/swordSpell.mp3');
       this.load.image('sky', 'assets/sky.png');
       this.load.image('ground', 'assets/platform.png');
       this.load.image('background', 'assets/Background.png')
@@ -360,8 +361,8 @@ const PhaserGame = ({enemies}) => {
       this.physics.world.overlap(playerBullets, enemy1, enemyHitCallback, null, this); //handle enemy hit by bullet
       this.physics.world.overlap(playerBullets, boss, enemyHitCallback, null, this); //handle boss hit by bullet
 
-      if(enemy1Killed===true && !boss && stage===3 && stars.countActive(true) === 0){
-        bossActive=true;
+      if (enemy1Killed === true && !boss && stage === 3 && stars.countActive(true) === 0) {
+        bossActive = true;
         createBoss.call(this);
       }
       //---------------------------check if player is invincible-----------------------
@@ -372,56 +373,61 @@ const PhaserGame = ({enemies}) => {
         // Add any other invincibility-related logic here
       }
       //---------------------check gameover --------------------------------------
-      if (gameOver) {
+      if (gameOver && !gameWonSoundPlayed) {
         sfx.stop();
         this.physics.pause();
         clearInterval(timer); // Stop the timer when the game is over
-        if(!scorePosted){
-          postNewScore();
-          scorePosted=true;
+        // Play the game won sound if it hasn't been played yet
+        if (!gameWonSoundPlayed) {
+          const gameWonSound = this.sound.add('wonGame');
+          gameWonSound.play();
+          gameWonSoundPlayed=true;
         }
-
+        if (!scorePosted) {
+          postNewScore();
+          scorePosted = true;
+        }
         return;
       }
       //arrow key controls.-------------------------------------------------------------------------------
-      if(!gameOver){
-      if (cursors.left.isDown) {
-        player.setVelocityX(-playerSpeed * 32);
-        // Flip the character horizontally when moving left
-        player.setScale(-1, 1);
-        player.anims.play('run', true);
-        // player.anims.play('left', true);
-        isFacingLeft = true; // Player is facing left
-      }
-      else if (cursors.right.isDown) {
-        player.setVelocityX(playerSpeed * 32);
-        // Reset the character's scale when moving right
-        player.setScale(1, 1);
-        player.anims.play('run', true);
-        // player.anims.play('right', true);
-        isFacingLeft = false; // Player is facing right
-      }
-      else {
-        if (this.keyX.isDown) {
-          player.anims.play('spell', true);
-        } else {
-          player.setVelocityX(0);
-          player.anims.play('idle', true);
+      if (!gameOver) {
+        if (cursors.left.isDown) {
+          player.setVelocityX(-playerSpeed * 32);
+          // Flip the character horizontally when moving left
+          player.setScale(-1, 1);
+          player.anims.play('run', true);
+          // player.anims.play('left', true);
+          isFacingLeft = true; // Player is facing left
+        }
+        else if (cursors.right.isDown) {
+          player.setVelocityX(playerSpeed * 32);
+          // Reset the character's scale when moving right
+          player.setScale(1, 1);
+          player.anims.play('run', true);
+          // player.anims.play('right', true);
+          isFacingLeft = false; // Player is facing right
+        }
+        else {
+          if (this.keyX.isDown) {
+            player.anims.play('spell', true);
+          } else {
+            player.setVelocityX(0);
+            player.anims.play('idle', true);
+          }
+        }
+        // Simulate player touching down----------------------------------------------------------------
+        if (player.y >= 565) {
+          player.body.touching.down = true;
+        }
+        // Play the jump animation when the player is not touching down (jumping or falling)
+        if (!player.body.touching.down) {
+          player.anims.play('jump', true);
+
+        }
+        if (cursors.up.isDown && player.body.touching.down) {
+          player.setVelocityY(-330);
         }
       }
-      // Simulate player touching down----------------------------------------------------------------
-      if (player.y >= 565) {
-        player.body.touching.down = true;
-      }
-      // Play the jump animation when the player is not touching down (jumping or falling)
-      if (!player.body.touching.down) {
-        player.anims.play('jump', true);
-
-      }
-      if (cursors.up.isDown && player.body.touching.down) {
-        player.setVelocityY(-330);
-      }
-    }
       // Update the position of the score and time text relative to the camera-------------------------------
       scoreText.x = this.cameras.main.scrollX + 16;
       scoreText.y = this.cameras.main.scrollY + 16;
@@ -438,106 +444,107 @@ const PhaserGame = ({enemies}) => {
 
 
       // ---Enemy movement logic----------------------------------------------------
-      if(enemy1 ){
+      if (enemy1) {
 
- 
-      if (enemy1Direction === 'right' && enemy1Health > 0) {
-        enemy1.setVelocityX(enemy1Speed * 25);
-        enemy1.anims.play('right', true);
-      } else if (enemy1Direction === 'left' && enemy1Health > 0) {
-        enemy1.setVelocityX(-enemy1Speed * 25);
-        enemy1.anims.play('left', true);
-        enemy1.flipX = false;
-      }
 
-      // Add logic for enemy small jumps (you can adjust this to your needs)
-      if (!enemy1Jumping) {
-        if (Phaser.Math.Between(1, 100) === 1) { // Adjust the probability as needed
-          enemy1.setVelocityY(-200);
-          enemy1Jumping = true;
+        if (enemy1Direction === 'right' && enemy1Health > 0) {
+          enemy1.setVelocityX(enemy1Speed * 25);
+          enemy1.anims.play('right', true);
+        } else if (enemy1Direction === 'left' && enemy1Health > 0) {
+          enemy1.setVelocityX(-enemy1Speed * 25);
+          enemy1.anims.play('left', true);
+          enemy1.flipX = false;
+        }
+
+        // Add logic for enemy small jumps (you can adjust this to your needs)
+        if (!enemy1Jumping) {
+          if (Phaser.Math.Between(1, 100) === 1) { // Adjust the probability as needed
+            enemy1.setVelocityY(-200);
+            enemy1Jumping = true;
+          }
+        }
+        //--------------------------------------------------------------------------
+        // Check if the enemy has reached the edges of the platform
+        if (enemy1.x <= 400) {
+          enemy1Direction = 'right';
+        } else if (enemy1.x >= 600) {
+          enemy1Direction = 'left';
         }
       }
-      //--------------------------------------------------------------------------
-      // Check if the enemy has reached the edges of the platform
-      if (enemy1.x <= 400) {
-        enemy1Direction = 'right';
-      } else if (enemy1.x >= 600) {
-        enemy1Direction = 'left';
-      }
-    }
       //---------------------------------------------------BOSS LOGIC!--------------------------------------------------------
       // Detect player's position
-      if (stage === 3 && enemy1Killed===true) {
+      if (stage === 3 && enemy1Killed === true) {
         // Check if the boss object exists
-        if (bossActive ) {
+        if (bossActive) {
           const playerX = player.x;
           const bossX = boss.x;
 
           // Define the boss's movement logic here
-          if(!gameOver ){
-          if (bossActive && bossHealth > 0) {
-            if (!hasDashed) {
-              if (player.x < boss.x) {
-                // Player is to the left of the boss, so make the boss dash left
-                boss.anims.play('bossDashAttack', true);
-                boss.setVelocityX(-bossDashSpeed * 30);
-                boss.flipX = true;
-              } else if (player.x > boss.x) {
-                // Player is to the right of the boss, so make the boss dash right
-                boss.anims.play('bossDashAttack', true);
-                boss.setVelocityX(bossDashSpeed * 30);
-                boss.flipX = false;
-              } else {
-                // Player is at the same position as the boss, so boss can perform other actions
-                // For example, make the boss idle or jump
-                boss.anims.play('idleBoss', true);
-                boss.setVelocityX(0);
-                boss.setVelocityY(0);
-              }
-              hasDashed = true;
-              if (boss && bossActive) {
-                // Start a timer to reset the boss's velocity and play idle animation
-                bossIdleTimer = this.time.addEvent({
+          if (!gameOver) {
+            if (bossActive && bossHealth > 0) {
+              if (!hasDashed) {
+                if (player.x < boss.x) {
+                  // Player is to the left of the boss, so make the boss dash left
+                  boss.anims.play('bossDashAttack', true);
+                  boss.setVelocityX(-bossDashSpeed * 30);
+                  boss.flipX = true;
+                } else if (player.x > boss.x) {
+                  // Player is to the right of the boss, so make the boss dash right
+                  boss.anims.play('bossDashAttack', true);
+                  boss.setVelocityX(bossDashSpeed * 30);
+                  boss.flipX = false;
+                } else {
+                  // Player is at the same position as the boss, so boss can perform other actions
+                  // For example, make the boss idle or jump
+                  boss.anims.play('idleBoss', true);
+                  boss.setVelocityX(0);
+                  boss.setVelocityY(0);
+                }
+                hasDashed = true;
+                if (boss && bossActive) {
+                  // Start a timer to reset the boss's velocity and play idle animation
+                  bossIdleTimer = this.time.addEvent({
                     delay: 1000,
                     callback: () => {
-                        // Check if the boss is still in the game
-                        if (boss && boss.active) {
-                            boss.setVelocityX(0);
-                            boss.anims.play('idleBoss', true);
-                        }
-        
-                        // Create a timer to allow the boss to dash again after a certain interval
-                        bossIdleTimer = this.time.addEvent({
-                            delay: 3000,
-                            callback: () => {
-                                hasDashed = false;
-                            },
-                            callbackScope: this,
-                        });
+                      // Check if the boss is still in the game
+                      if (boss && boss.active) {
+                        boss.setVelocityX(0);
+                        boss.anims.play('idleBoss', true);
+                      }
+
+                      // Create a timer to allow the boss to dash again after a certain interval
+                      bossIdleTimer = this.time.addEvent({
+                        delay: 3000,
+                        callback: () => {
+                          hasDashed = false;
+                        },
+                        callbackScope: this,
+                      });
                     },
                     callbackScope: this,
-                });}
-              // // Start a timer to reset the boss's velocity and play idle animation
-              // this.time.addEvent({
-              //   delay: 1000,
-              //   callback: () => {
-              //     boss.setVelocityX(0);
-              //     boss.anims.play('idleBoss', true);
+                  });
+                }
+                // // Start a timer to reset the boss's velocity and play idle animation
+                // this.time.addEvent({
+                //   delay: 1000,
+                //   callback: () => {
+                //     boss.setVelocityX(0);
+                //     boss.anims.play('idleBoss', true);
 
-              //     // Create a timer to allow the boss to dash again after a certain interval
-              //     this.time.addEvent({
-              //       delay: 3000,
-              //       callback: () => {
-              //         hasDashed = false;
-              //       },
-              //       callbackScope: this,
-              //     });
-              //   },
-              //   callbackScope: this,
-              // });
+                //     // Create a timer to allow the boss to dash again after a certain interval
+                //     this.time.addEvent({
+                //       delay: 3000,
+                //       callback: () => {
+                //         hasDashed = false;
+                //       },
+                //       callbackScope: this,
+                //     });
+                //   },
+                //   callbackScope: this,
+                // });
+              }
             }
           }
-        }
         }
       }
     }
@@ -566,14 +573,14 @@ const PhaserGame = ({enemies}) => {
       // Add and update the score
       score += 10;
       scoreText.setText('Score: ' + score);
-    
-      if(stage<3){
-        if (stars.countActive(true) === 0 ) {
+
+      if (stage < 3) {
+        if (stars.countActive(true) === 0) {
           // A new batch of stars to collect
           stars.children.iterate(function (child) {
             child.enableBody(true, child.x, 0, true, true);
           });
-      
+
           var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
           var bomb = bombs.create(x, 16, 'bomb');
           bomb.setBounce(1);
@@ -710,14 +717,12 @@ const PhaserGame = ({enemies}) => {
           bossHealth -= playerDamage;
 
           if (bossHealth <= 0) {
-            if(!bossKilled){
+            if (!bossKilled) {
               score += 1500; // Add points for defeating the boss
             }
-            bossKilled=true;
-            // const gameWonSound = this.sound.add('wonGame');
-            // gameWonSound.play();
+            bossKilled = true;
             boss.destroy(); // Destroy the boss
-            bossActive=false;
+            bossActive = false;
             boss.setActive(false).setVisible(false);
             // Show the win message and grey overlay
             winMessage.setVisible(true);
@@ -730,7 +735,7 @@ const PhaserGame = ({enemies}) => {
           enemy1Health -= playerDamage;
 
           if (enemy1Health <= 0) {
-            if(!enemy1Killed){
+            if (!enemy1Killed) {
               score += 500; // Add points for defeating an enemy
 
             }
@@ -751,11 +756,11 @@ const PhaserGame = ({enemies}) => {
 
     function postNewScore() {
       const requestData = {
-        userId:userData.userId,
-        username:userData.username,
+        userId: userData.userId,
+        username: userData.username,
         score: score,
       };
-    
+
       fetch('http://localhost:8080/api/leaderboard', {
         method: 'POST',
         headers: {
@@ -839,7 +844,7 @@ const PhaserGame = ({enemies}) => {
     <div id="phaser-container">
       {/* Phaser game will be rendered here */}
     </div>
-    
+
   );
 };
 
