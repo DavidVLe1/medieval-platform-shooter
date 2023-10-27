@@ -18,7 +18,6 @@ export default function Login() {
   const navigate = useNavigate();
   const handleSignIn = async (event) => {
     event.preventDefault();
-    console.log(signInFormData);
     //attempt to sign in, if successful, set isAuthentication to true.
     //if failure, give message of sign in failed.
     try {
@@ -33,9 +32,7 @@ export default function Login() {
       if (response.ok) {
         // Sign-in was successful
         const responseData = await response.json();
-        console.log("Sign-in Successful", responseData);
         const { userId } = responseData;
-        console.log("Login response data: " + responseData);
         handleUserData(responseData);
         handleAuthentication(true);
         handleUserId(userId);

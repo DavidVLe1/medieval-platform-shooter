@@ -24,9 +24,7 @@ export default function GameContainer() {
                 }
             })
             .then(data => {
-                console.log(data);
                 setEnemies(data);
-                console.log("enemies:" + enemies);
             })
             .catch(error => {
                 console.error(error); // Log for debugging

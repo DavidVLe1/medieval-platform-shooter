@@ -14,10 +14,8 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const handleAuthentication = (status) => {
     setIsAuthenticated(status);
-    // console.log('isAuthenticated updated:', status);
   };
   const [isUserId, setisUserId] = useState(0);
-  console.log(isUserId);
   const handleUserId = (userId) => {
     setisUserId(userId);
   }

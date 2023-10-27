@@ -22,13 +22,10 @@ export default function SignUp() {
     };
 
 
-    // useEffect(() => {
-    //   console.log("Updated Form Data with userID:", signUpFormData);
-    // }, [signUpFormData]);
+
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        // console.log("Form Data:", signUpFormData);
 
         try {
             const response = await fetch("http://localhost:8080/api/user", {
@@ -41,12 +38,10 @@ export default function SignUp() {
 
             if (response.ok) {
                 const responseData = await response.json();
-                console.log("responseData : "+responseData);
                 const { userId } = responseData; // Extract userId from the response
                 handleAuthentication(true);
                 handleUserId(userId);
                 handleUserData(responseData);
-                // console.log("isUserId: "+isUserId); 1 means not guest
 
 
                 const playerCharacterData = {//default generated.
@@ -72,17 +67,9 @@ export default function SignUp() {
                     });
 
                     if (playerResponse.ok) {
-                        console.log("Player Generated Successful");
-
-
-
-
                         // Extract the new player character id from the response
                         const playerCharacterResponseData = await playerResponse.json();
-                        console.log("playerCharacterResponseData is: "+playerCharacterResponseData.playerCharacterId);
                         const newPlayerCharacterId = playerCharacterResponseData.playerCharacterId;
-
-
                         // If creating the player character is successful, create game events
                         const gameEventsData = {
                             // other game events data
@@ -103,7 +90,7 @@ export default function SignUp() {
                             });
 
                             if (gameEventsResponse.ok) {
-                                console.log("Game Events Created Successfully");
+
                             } else {
                                 const gameEventsErrorData = await gameEventsResponse.json();
                                 console.error("Game Events Creation failed:", gameEventsErrorData);
@@ -133,7 +120,7 @@ export default function SignUp() {
                             });
 
                             if (worldStatsResponse.ok) {
-                                console.log("World Stats Created Successfully");
+
                             } else {
                                 const worldStatsErrorData = await worldStatsResponse.json();
                                 console.error("World Stats Creation failed:", worldStatsErrorData);
@@ -152,7 +139,7 @@ export default function SignUp() {
                     console.error("An error occurred while creating a player character:", playerError);
                 }
 
-                console.log("Registration Successful");
+
                 setSignUpFormData({ ...signUpFormData, userId });
                 navigate("/")
             } else {

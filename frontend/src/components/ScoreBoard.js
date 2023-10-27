@@ -24,7 +24,6 @@ export default function ScoreBoard() {
                 }
             })
             .then(data => {
-                // console.log(data);
                 setScores(data);
             })
             .catch(error => {
@@ -35,7 +34,6 @@ export default function ScoreBoard() {
     // Slice the scores array to display only the first 10 entries
     const limitedScores = scores.slice(0, 10);
 
-    console.log(scores)
     return (
         <div className="scoreboard-container">
             <h1>Leaderboard</h1>

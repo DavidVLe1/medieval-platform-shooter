@@ -4,7 +4,7 @@ import AuthContext from './context/AuthContext';
 
 const PhaserGame = ({ enemies }) => {
   const { userData } = useContext(AuthContext);
-  console.log(" userData: " + userData.username + "," + userData.userId);
+
   useEffect(() => {
     const config = {
       type: Phaser.AUTO,
@@ -45,14 +45,12 @@ const PhaserGame = ({ enemies }) => {
     var playerDamage = 10;
     var maxHealth = 100;
     var healthPoints = maxHealth;
-    var enemy1; //for adding as sprite
+    var enemy1; 
     var bossActive = false;
-    var enemy1Obj = enemies[0];//for holding data
-    // enemies.forEach((enemy, index) => { //tests whats inside the enemies prop.
-    //   console.log(`Enemy ${index + 1}:`, enemy);
-    // });
-    let enemy1Direction = 'right'; // To keep track of enemy's movement direction
-    let enemy1Jumping = false; // To keep track of enemy's jump state
+    var enemy1Obj = enemies[0];
+
+    let enemy1Direction = 'right'; 
+    let enemy1Jumping = false; 
     var enemy1Damage = enemy1Obj.damage;
     var enemy1Health = enemy1Obj.health;
     var enemy1Speed = enemy1Obj.speed;
@@ -67,9 +65,9 @@ const PhaserGame = ({ enemies }) => {
     var bossHealth = bossObj.health;
     var bossDamage = bossObj.damage;
     var bossDashSpeed = bossObj.speed;
-    // Define a variable to track whether the boss has dashed
+
     let hasDashed = false;
-    // Add a variable to keep track of invincibility state
+
     let isInvincible = false;
     let invincibilityTimer;
     const colors = {
@@ -771,8 +769,6 @@ const PhaserGame = ({ enemies }) => {
         .then((response) => {
           if (response.ok) {
             // The leaderboard has been updated successfully.
-            // You can handle this as needed (e.g., showing a success message).
-            console.log('Leaderboard updated successfully');
             // return response.json();
           } else {
             // Handle any errors here.
