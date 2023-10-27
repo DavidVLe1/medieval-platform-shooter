@@ -126,9 +126,6 @@ const PhaserGame = ({ enemies }) => {
       for (let i = 0; i < 2000; i += 30) {
         platforms.create(i, 610, 'ground1');
       }
-      //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
-      // platforms.create(800, 680, 'ground').setScale(6, 6).refreshBody();
-      //  Now let's create some ledges
       platforms.create(600, 450, 'ground');
       platforms.create(50, 300, 'ground');
       platforms.create(750, 270, 'ground');
@@ -137,8 +134,6 @@ const PhaserGame = ({ enemies }) => {
       this.add.image(0, 555, 'stopSign'); // Adjust the position as needed
       this.add.image(1990, 555, 'stopSign'); // Adjust the position as needed
 
-      // The player and its settings
-      // player = this.physics.add.sprite(100, 450, 'dude');
       player = this.physics.add.sprite(50, 50, 'knight');
       player.setSize(15, 60, 15, 0); // Set the width and height of the physics body and fix offset of x and y axis of sprite hitbox.
 
@@ -522,24 +517,7 @@ const PhaserGame = ({ enemies }) => {
                     callbackScope: this,
                   });
                 }
-                // // Start a timer to reset the boss's velocity and play idle animation
-                // this.time.addEvent({
-                //   delay: 1000,
-                //   callback: () => {
-                //     boss.setVelocityX(0);
-                //     boss.anims.play('idleBoss', true);
 
-                //     // Create a timer to allow the boss to dash again after a certain interval
-                //     this.time.addEvent({
-                //       delay: 3000,
-                //       callback: () => {
-                //         hasDashed = false;
-                //       },
-                //       callbackScope: this,
-                //     });
-                //   },
-                //   callbackScope: this,
-                // });
               }
             }
           }
@@ -751,7 +729,6 @@ const PhaserGame = ({ enemies }) => {
       }
     }
 
-
     function postNewScore() {
       const requestData = {
         userId: userData.userId,
@@ -780,9 +757,6 @@ const PhaserGame = ({ enemies }) => {
           console.error('An error occurred:', error);
         });
     }
-
-
-
 
     class Bullet extends Phaser.GameObjects.Image {
       constructor(scene, config) {
