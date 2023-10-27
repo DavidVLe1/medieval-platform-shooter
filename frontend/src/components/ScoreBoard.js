@@ -47,7 +47,7 @@ export default function ScoreBoard() {
                 </thead>
                 <tbody>
                     {limitedScores.map((entry, index) => (
-                        <tr key={entry.player}>
+                        <tr key={entry.username+index}>
                             <td>{index + 1}</td>
                             <td>{entry.username}</td>
                             <td>{entry.score}</td>

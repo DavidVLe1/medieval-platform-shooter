@@ -11,7 +11,7 @@ export default function Nav() {
         
         <div className="container-fluid navbar-custom" >
             <nav className="navbar navbar-expand-lg "  >
-                <NavLink className="navbar-brand vt323-font custom-link"  to="/" activeClassName="active">
+                <NavLink className="navbar-brand vt323-font custom-link"  to="/" activeclassname="active">
                     Starlight Quest: Knight's Challenge
                 </NavLink>
                 <button
