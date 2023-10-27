@@ -1,0 +1,5 @@
+In order to set up and run this application, make sure to do the following steps.
+1. Load at least the SQL Production and example data Schema onto MySQL database and ensure the MySQL Database is Live.
+2. Run the Backend through an IDE such as InteliJ through the App.js file.
+3. Open the frontend with an IDE such as VS Code, install the required packages through npm i.
+4. Run the frontend with npm start and sign up or login with data from the SQL production schema.
