@@ -329,22 +329,98 @@ ___
 -Sensible layering and pattern choices
 -A full test suite that covers the domain and data layers.
 
-## Summarized 
+## Summarized tasks
 ___
 ### FrontEnd
 - Focuses on using Phaser.js or Kaboom.js to create a playable video game.
 - stores data locally initially and then posts to backend upon save.
 - is a platform shooter.
--
--
+- [x] Create Sign Up Component. (2.5 Hours)
+  - [x] Send Data to Backend Database
+  - [x] Become Authenticated after signup.
+- [x] Create Login Component. (1.5 Hours)
+  - [x] Get User Data from Backend to authenticate.
+  - [x] Load data into frontend.
+  - [x] Become Authenticated.
+  - [x] Navigate to Home.
+- [x] Create LogOut Component. (1.0 Hours)
+  - [x] Remove authentication.
+  - [x] navigate to Home.
+  - [x] Ensure routes are now blocked if not authenticated.
+- [x] Create ScoreBoard Component. (2.0 Hours)
+  - [x] Read Scores from Leaderboard Table.
+  - [x] Display scores from up to 10, from highest to lowest.
+  - [x] Displays new Scores from the user when they are logged in once completing their game.
+- [x] Create Home Component. (2.5 Hours)
+  - [x] Stylized Home to welcome user or guest.
+    - [x] welcomes the user by name if authenticated.
+    - [x] prompt guest to log in or sign up.
+- [x] Create Nav Component. (3.5 Hours)
+  - [x] handle routes depending on user being authenticated.
+    - [x] guests are shown sign up, sign in, and home.
+    - [x] users are shown log out, home, game, scoreboard/leaderboard.
+- [x] Secure routing in frontend. (2.0 Hours)
+  - [x] use React Context so that components can check if authenticated or not.
+  - [x] prevent guest from accessing routes they shouldn't and send them to error page.
+- [x] Connect to Backend and pass/receive Data. (3.0 Hours)
+  - [x] ensure data from tables are being received as well as checking that data is being populated onto database.
+    - [x] populate user on sign up which then populates the rest of the connected tables.
+    - [x] ensure other tables that are used are being read correctly by frontend.
+- [x] Create platforms in game Component. (1.5 Hours)
+  - [x] Ensure they are physical colliders with player and enemies and not invisible.
+- [x] Create playable Character. (2.0 Hours)
+  - [x] Ensure player can fight, move, jump.
+    - [x] Ensure animations are working for these actions.
+    - [x] Ensure Stats are being populated from the database and affect the game.
+      - [x] health being zero or below will result in player death animation and game over screen.
+  - [x] Ensure game doesn't break.
+- [x] Create enemies(Boss, minions). (4.0 Hours)
+  - [x] Ensure enemies deal damage.
+  - [x] Enemy stats are populated by data from the backend.
+  - [x] Ensure enemies can die.
+  - [x] Ensure game doesn't break.
+- [x] Add Sound Effects. (1.5 Hours)
+  - [x] Winning game sound effects.
+  - [x] Losing game Sound effects.
+  - [x] sound effects from stars being picked up.
+  - [x] sound effects for player dying.
+  - [x] sound effects for player attacks.
+  - [x] Ensure game doesn't break.
+- [x] Implement Animations to sprites. (4.0 Hours)
+  - [x] Ensure game doesn't break.
+  - [x] attach animation to player.
+  - [x] attach animation to enemies.
+  - [x] attach animation to Boss.
+- [x] Populate variables in Phaser.js with data from User and backend Database. (2.0 Hours)
+  - [x] Ensure there is no empty/null data pushed or received.
+- [x] Implement Time tracker, score tracker, and health tracker in game and display them. (2.0 Hours)
+- [x] Implement Win Condition in Phaser.js Game component. (1.0 Hours)
+  - [x] Triggered on boss death which spawns after collecting stars and killing enemy.
+- [x] Implement Lose Condition in Phaser.js Game component. (1.5 Hours)
+  - [x] Triggered by Health going to zero.
 
 ### BackEnd
 -  If user is a guest, don't save any data or store any data as it will be held temporarily, similar with a user, but they can save whenever they want. 
-- at least 4 tables: LeaderBoard, Items, User, World Stats, PlayableCharacter, Enemies, NPCs, Achievements, GameEvents
+- at least 4 tables: LeaderBoard, Items, User, World Stats, PlayableCharacter, Enemies, NPCs, GameEvents
   - enemies table is for grabbing enemy data to construct an enemy on frontend same with npcs
   -  items table will be pulled from database into game to generate items and can be loaded into the player_character's inventory.
   - player storage stores items user picked up
   - skills table holds skills that enemies and user can use.
-- 
+
+- [x] Build Database Schema test and Production Schema (#3.3 Hours)
+  - [x] Test communication between Database and Backend.
+  - [x] Create Example Schema to insert Data into Production database.
+- [x] Build Model Layer of required tables (#1.5 Hours).
+  - [x] Populate models with appropriate fields and functions.
+- [x] Build Data Layer for required tables (#3.0 Hours)
+  - [x] implement CRUD capability and query to database.
+- [x] Fully Test Data Layer (#3.0 Hours);
+  - [x] Test CRUD capability in Data Layer
+- [x] Build Domain Layer for required tables (#4.0 Hours).
+- [x] Fully Test for Domain Layer (#4.0 Hours)
+  - [x] Test CRUD capability in Domain Layer.
+- [x] Build Controller Layer for required tables (#3.0 Hours).
+- [x] Test Controller Layer (#1.0 Hours).
+- [x] Connect Backend to FrontEnd (#2.5 Hours);
 
 
