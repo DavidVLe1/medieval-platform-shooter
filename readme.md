@@ -1,6 +1,9 @@
 
 # CapStone Assessment Proposal
 
+## Gameplay
+![Gameplay GIF](fullstack-web-game-phaser-dle.gif)
+
 ## Problem Statement
 ___
 - In the realm of gaming, timeless classics like Mega Man have left an 
